@@ -5,7 +5,7 @@ import { hostAttr } from '@ext/shared/utils';
 import { ImageLoaderParams, ImageTypes } from './image.models';
 
 @Component({
-  selector: 'myth-image',
+  selector: 'ext-image',
   standalone: true,
   templateUrl: './image.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
