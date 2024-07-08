@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "DMarket Anti-Scam",
+  "description": "DMarket Anti-Scam Chrome Extension",
+  "version": "1.0",
+  "homepage_url": "https://dmarket.com",
+  "incognito": "split",
+  "icons": {
+    "16": "assets/img/icons/logo-16.png",
+    "32": "assets/img/icons/logo-32.png",
+    "48": "assets/img/icons/logo-48.png",
+    "128": "assets/img/icons/logo-128.png"
+  },
+  "action": {
+    "default_popup": "index.html"
+  },
+  "permissions": ["tabs", "storage", "scripting", "activeTab", "webNavigation"],
+  "optional_host_permissions": ["https://*/*", "http://*/*"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "options_ui": {
+    "page": "index.html",
+    "open_in_tab": false
+  }
+}

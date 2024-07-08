@@ -1,0 +1,5 @@
+{
+  "**/*.{ts,js}": ["eslint"],
+  "**/*": ["npm run format --"],
+  "**/*.{scss,css}": ["npm run lint:styles --"]
+}
