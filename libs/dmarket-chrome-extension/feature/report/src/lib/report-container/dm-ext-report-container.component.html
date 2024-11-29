@@ -1,0 +1,184 @@
+<ng-container *transloco="let t">
+  <main class="flex flex-col px-4 pb-4 pt-6">
+    @if (step() !== Steps.Step3) {
+      <header>
+        <h2 class="text-left text-lg font-bold leading-8">
+          {{ t('Report as a scam') }}
+        </h2>
+      </header>
+    }
+    <section
+      [formGroup]="reportForm"
+      [ngClass]="{ 'mt-6': step() !== Steps.Step3 }"
+      class="flex w-full flex-col items-stretch gap-6"
+    >
+      @if (step() === Steps.Step3) {
+        <dm-ext-result-screen [submitError]="submitError()">
+          <ng-template #errorTitleTemplate>{{ t('Something went wrong...') }}</ng-template>
+          <ng-template #errorTextTemplate>{{ t('Please try again later') }}</ng-template>
+          <ng-template #successTitleTemplate>{{
+            t('Thanks, your report has been accepted')
+          }}</ng-template>
+          <ng-template #successTextTemplate>
+            {{ t('Together, we are creating a safe environment') }}</ng-template
+          >
+        </dm-ext-result-screen>
+      } @else if (step() === Steps.Step2) {
+        @if (channelControl) {
+          <mat-form-field
+            appearance="outline"
+            class="w-full"
+          >
+            <mat-label>{{ t('How did you reach web site?') }}</mat-label>
+            <mat-select
+              [formControlName]="FormFields.Channel"
+              panelClass="h-[136px]"
+              required
+            >
+              @for (option of channels; track option) {
+                <mat-option [value]="option">{{ t(option) }}</mat-option>
+              }
+            </mat-select>
+            @if (channelControl.invalid && channelControl.dirty) {
+              <mat-error>
+                @if (channelControl.hasError('required')) {
+                  {{ t('This field is required') }}
+                }
+              </mat-error>
+            }
+          </mat-form-field>
+        }
+        @if (emailControl) {
+          <mat-form-field
+            appearance="outline"
+            class="w-full"
+          >
+            <mat-label>{{ t('Your email') }}</mat-label>
+            <input
+              required
+              matInput
+              [formControlName]="FormFields.Email"
+              [name]="FormFields.Email"
+            />
+
+            @if (emailControl.invalid && emailControl.dirty) {
+              <mat-error>
+                @if (emailControl.hasError('required')) {
+                  {{ t('This field is required') }}
+                } @else if (emailControl.hasError('email')) {
+                  {{ t('Please enter valid email address') }}
+                } @else if (emailControl.hasError('minlength')) {
+                  {{
+                    t('Minimum required length is {requiredLength}', {
+                      requiredLength: constraints.messageMinLength,
+                    })
+                  }}
+                }
+              </mat-error>
+            }
+          </mat-form-field>
+        }
+      } @else {
+        @if (urlControl) {
+          <mat-form-field
+            appearance="outline"
+            class="w-full"
+          >
+            <mat-label>{{ t('Enter website URL') }}</mat-label>
+            <input
+              required
+              matInput
+              [formControlName]="FormFields.Url"
+              [name]="FormFields.Url"
+              (paste)="onPaste($event)"
+            />
+
+            @if (urlControl.invalid) {
+              <mat-error>
+                @if (urlControl.hasError('required')) {
+                  {{ t('This field is required') }}
+                } @else if (urlControl.hasError('pattern')) {
+                  {{ t('Please enter valid URL') }}
+                } @else if (urlControl.hasError('maxlength')) {
+                  {{
+                    t('Maximum required length is {requiredLength}', {
+                      requiredLength: constraints.urlMaxLength,
+                    })
+                  }}
+                }
+              </mat-error>
+            }
+          </mat-form-field>
+        }
+      }
+    </section>
+
+    <div class="mt-4 grid w-full grid-cols-1 gap-3">
+      @if (step() === Steps.Step3) {
+        <ng-container
+          *ngTemplateOutlet="
+            actionBtn;
+            context: {
+              disabled: false,
+              action: closeReport.bind(this),
+              label: t('Close'),
+            }
+          "
+        ></ng-container>
+      } @else if (step() === Steps.Step2) {
+        <ng-container
+          *ngTemplateOutlet="
+            actionBtn;
+            context: {
+              disabled: !reportForm.valid,
+              action: submitReport.bind(this),
+              icon: svgIcons.IconFlag,
+              processing: processing(),
+              label: t('Report'),
+            }
+          "
+        ></ng-container>
+      } @else {
+        <ng-container
+          *ngTemplateOutlet="
+            actionBtn;
+            context: {
+              disabled: !urlControl.valid,
+              action: toggleReportDetails.bind(this),
+              icon: svgIcons.IconFlag,
+              label: t('Continue to report'),
+            }
+          "
+        ></ng-container>
+      }
+      <ng-template
+        #actionBtn
+        let-disabled="disabled"
+        let-action="action"
+        let-icon="icon"
+        let-label="label"
+        let-processing="processing"
+      >
+        <dm-ext-button
+          [disabled]="disabled"
+          [isMaxWidth]="true"
+          iconPos="left"
+          (clickEvent)="action()"
+        >
+          <ng-template #iconTemplate>
+            @if (processing) {
+              <mat-spinner diameter="24"></mat-spinner>
+            } @else if (icon) {
+              <mat-icon [svgIcon]="icon"></mat-icon>
+            }
+          </ng-template>
+          @if (label) {
+            <ng-template #labelTemplate>
+              {{ label }}
+            </ng-template>
+          }
+        </dm-ext-button>
+      </ng-template>
+    </div>
+  </main>
+</ng-container>

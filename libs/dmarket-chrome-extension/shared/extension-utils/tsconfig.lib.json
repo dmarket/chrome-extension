@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "outDir": "../../../../dist/out-tsc",
+    "declaration": true,
+    "declarationMap": true,
+    "inlineSources": true,
+    "types": ["chrome", "node", "webextension-polyfill"]
+  },
+  "exclude": [],
+  "extends": "./tsconfig.json",
+  "include": ["src/**/*.ts"]
+}

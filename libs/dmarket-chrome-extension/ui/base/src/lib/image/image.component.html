@@ -1,0 +1,37 @@
+@if (!!srcset && src) {
+  <img
+    placeholder
+    [ngSrc]="src"
+    [width]="width"
+    [height]="height"
+    [ngSrcset]="srcset"
+    [sizes]="sizes"
+    [loaderParams]="loaderParams"
+    [fill]="fill"
+    [attr.alt]="alt"
+    (error)="onError($event)"
+    [priority]="priority"
+    [attr.aria-label]="ariaLabel"
+    [ngClass]="classes"
+  />
+} @else if (src) {
+  <img
+    placeholder
+    [ngSrc]="src"
+    [width]="width"
+    [height]="height"
+    disableOptimizedSrcset
+    [loaderParams]="loaderParams"
+    [fill]="fill"
+    [attr.alt]="alt"
+    (error)="onError($event)"
+    [priority]="priority"
+    [attr.aria-label]="ariaLabel"
+    [ngClass]="classes"
+  />
+} @else {
+  <img
+    [src]="defaultImage"
+    [attr.alt]="alt"
+  />
+}

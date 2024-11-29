@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc",
+    "types": ["chrome", "node", "webextension-polyfill"]
+  },
+  "exclude": ["jest.config.ts", "src/**/*.test.ts", "src/**/*.spec.ts"],
+  "extends": "./tsconfig.json",
+  "files": [
+    "src/main.ts",
+    "src/background.ts",
+    "src/content/dmarket.ts",
+    "src/content/steamcommunity.ts",
+    "src/content/google.ts"
+  ],
+  "include": ["src/**/*.d.ts"]
+}

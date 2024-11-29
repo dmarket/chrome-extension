@@ -1,43 +1,42 @@
-# Dmarket Chrome Extension
+# Dmarket Trust Shield Chrome Extension
 
-## Start the application
+## Install
 
-Run `CONFIG=development npm run dev` to start the development server.
+### nvm
 
-## Watch for built app
+> curl -o- <https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh> | bash
 
-Run `CONFIG=production npm run watch` to build the application. The build artifacts are stored in the output directory (e.g. `dist/` or `build/`), ready to be deployed.
+### Node.js
+
+> nvm install
+
+### pnpm
+
+> npm install -g pnpm
+
+#### Setup Home Path
+
+> pn setup
+
+Restart terminal
+
+### nx
+
+Install NX Globally
+
+> pnpm install nx@latest -g
+
+Install Local Dependencies
+
+> pnpm install
+
+Install Nx Console IDE extension
 
 
-## Build for production
+### Development
 
-Run `CONFIG=production npm run build` to build the application. The build artifacts are stored in the output directory (e.g. `dist/` or `build/`), ready to be deployed.
+> nx run dmarket-chrome-extension:serve:development
 
-## Running tasks
+### Build extension
 
-To execute tasks with Nx use the following syntax:
-
-```
-npx nx <target> <project> <...options>
-```
-
-You can also run multiple targets:
-
-```
-npx nx run-many -t <target1> <target2>
-```
-
-..or add `-p` to filter specific projects
-
-```
-npx nx run-many -t <target1> <target2> -p <proj1> <proj2>
-```
-
-Targets can be defined in the `package.json` or `projects.json`. Learn more [in the docs](https://nx.dev/features/run-tasks).
-
-## Explore the project graph
-
-Run `npx nx graph` to show the graph of the workspace.
-It will show tasks that you can run with Nx.
-
-- [Learn more about Exploring the Project Graph](https://nx.dev/core-features/explore-graph)
+>  nx run dmarket-chrome-extension:build:production

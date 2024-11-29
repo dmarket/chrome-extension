@@ -1,0 +1,41 @@
+{
+  "dm_ext_description": {
+    "message": "DMarket Trust Shield Chrome Extension THIS EXTENSION IS FOR BETA TESTING"
+  },
+  "dm_ext_icon_disabled": {
+    "message": "Disabled"
+  },
+  "dm_ext_name": {
+    "message": "DMarket Trust Shield BETA"
+  },
+  "dm_ext_unknown_error": {
+    "message": "Unknown error"
+  },
+  "dm_ext_verified_dmarket_domain": {
+    "message": "Verified DMarket domain. Trusted and secure."
+  },
+  "steamcommunity_traderOfferCheck_tradeUnverified_continueTrade": {
+    "message": "Continue trade"
+  },
+  "steamcommunity_traderOfferCheck_tradeUnverified_safetyGuidelines": {
+    "message": "Safety Guidelines"
+  },
+  "steamcommunity_traderOfferCheck_tradeUnverified_subtitle": {
+    "message": "Caution! This bot is not verified by DMarket. Double-check details and proceed only if you trust this trade partner"
+  },
+  "steamcommunity_traderOfferCheck_tradeUnverified_title": {
+    "message": "Warning: Unverified Bot"
+  },
+  "steamcommunity_traderOfferCheck_tradeUnverified_titleBanner": {
+    "message": "This bot is not verified by DMarket. Proceed with caution."
+  },
+  "steamcommunity_traderOfferCheck_tradeVerified_subtitle": {
+    "message": "This bot has been verified by DMarket for secure trading."
+  },
+  "steamcommunity_traderOfferCheck_tradeVerified_title": {
+    "message": "Verified DMarket Bot"
+  },
+  "steamcommunity_traderOfferCheck_tradeVerified_titleBanner": {
+    "message": "This bot is verified by DMarket and safe for trading."
+  }
+}

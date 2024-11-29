@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "implicitDependencies": ["dm-ext-ui-base", "dm-ext-ui-domains"],
+  "name": "dm-ext-ui-explorer-storybook",
+  "prefix": "dm-ext",
+  "projectType": "library",
+  "sourceRoot": "libs/dmarket-chrome-extension/ui-explorer/storybook/src",
+  "tags": ["scope:dmarket-chrome-extension", "type:ui-explorer"],
+  "targets": {
+    "storybook": {
+      "options": {
+        "styles": ["apps/dmarket-chrome-extension/src/styles/main.scss"]
+      }
+    }
+  }
+}

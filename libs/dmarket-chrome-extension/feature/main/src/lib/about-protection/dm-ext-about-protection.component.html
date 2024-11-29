@@ -1,0 +1,79 @@
+<ng-container *transloco="let t">
+  <main class="flex flex-col px-4 pb-4 pt-6">
+    <header class="flex w-full items-center justify-between">
+      <h2 class="text-center text-lg font-bold leading-8">
+        {{ t('How to get maximum protection?') }}
+      </h2>
+      <dm-ext-button
+        size="sm"
+        type="iconButton"
+        colorScheme="transparent"
+        (clickEvent)="finishTutorial()"
+      >
+        <ng-template #iconTemplate>
+          <mat-icon [svgIcon]="svgIcons.IconClose"></mat-icon>
+        </ng-template>
+      </dm-ext-button>
+    </header>
+    <section class="mt-6 flex w-full flex-col">
+      <ul class="list-inside list-decimal text-sm font-medium leading-6 text-stone-300">
+        <li class="mb-6">
+          <span
+            >{{ t('In') }}&nbsp;<span class="font-medium uppercase text-white">{{
+              t('chrome browser')
+            }}</span
+            >&nbsp;{{ t('find and click') }}
+            <mat-icon
+              class="mx-1 inline-block !size-4 align-middle text-white"
+              [svgIcon]="svgIcons.IconExtension"
+            ></mat-icon
+            >{{ t('icon in the toolbar') }}</span
+          >
+          <dm-ext-shared-image
+            width="934"
+            height="76"
+            src="browser-ext-icon"
+            class="mt-4 block w-full"
+            alt="Chrome browser icon"
+          />
+        </li>
+        <li>
+          <span
+            >{{ t('In a dropdown click on') }}
+            <mat-icon
+              class="inline-block !size-5 align-middle text-white"
+              [svgIcon]="svgIcons.IconPin"
+            ></mat-icon>
+            {{ t('to pin extension on your toolbar.') }}<br />
+            {{ t('We will notify you in case of a potential scam.') }}
+            <mat-icon
+              class="inline-block !size-5 align-middle text-white"
+              [svgIcon]="svgIcons.IconExtensionAlert"
+            ></mat-icon
+          ></span>
+          <dm-ext-shared-image
+            [priority]="true"
+            width="934"
+            height="333"
+            src="browser-ext-pin"
+            class="mt-4 block w-full"
+            alt="Chrome browser icon"
+          />
+        </li>
+      </ul>
+    </section>
+    <dm-ext-button
+      class="mt-6"
+      [isMaxWidth]="true"
+      iconPos="right"
+      (clickEvent)="finishTutorial()"
+    >
+      <ng-template #iconTemplate>
+        <mat-icon [svgIcon]="svgIcons.IconArrowForward"></mat-icon>
+      </ng-template>
+      <ng-template #labelTemplate>
+        {{ t('Got it') }}
+      </ng-template>
+    </dm-ext-button>
+  </main>
+</ng-container>

@@ -40,5 +40,8 @@ Thumbs.db
 
 .nx/cache
 .nx/workspace-data
-
 .angular
+
+
+storybook-static
+/apps/mythical-games/src/routes.txt

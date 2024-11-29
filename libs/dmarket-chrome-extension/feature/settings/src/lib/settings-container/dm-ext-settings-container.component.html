@@ -1,0 +1,71 @@
+<ng-container *transloco="let t">
+  <main
+    [ngClass]="{ 'mx-auto max-w-[600px]': isOptionsPage() }"
+    class="flex flex-col px-4 pb-4 pt-6"
+  >
+    <header>
+      <h1 class="text-left text-lg font-bold leading-8">
+        {{ t('Settings') }}
+      </h1>
+    </header>
+    <section class="mt-6 flex w-full flex-col items-stretch">
+      @if (options(); as options) {
+        <div class="mt-4 flex w-full justify-between gap-4">
+          <div class="flex flex-col items-stretch">
+            <div class="text-primary text-base font-semibold">
+              {{ t('DMarket Domain Authenticity Verification') }}
+            </div>
+            <div class="mt-2 text-sm font-medium leading-6 text-stone-300">
+              {{
+                t(
+                  'This feature protects against phishing sites that mimic the DMarket domain by verifying the authenticity of the website.'
+                )
+              }}
+            </div>
+          </div>
+          <mat-slide-toggle
+            [hideIcon]="true"
+            [ngModel]="options.domainAuthenticityVerification"
+            (ngModelChange)="updateOptions($event, 'domainAuthenticityVerification')"
+          >
+          </mat-slide-toggle>
+        </div>
+        <hr class="my-4 border-zinc-900" />
+        <div class="flex w-full justify-between gap-4">
+          <div class="flex flex-col items-stretch">
+            <div class="text-primary text-base font-semibold">
+              {{ t('DMarket Trade Bots Verification') }}
+            </div>
+            <div class="mt-2 text-sm font-medium leading-6 text-stone-300">
+              {{
+                t(
+                  'This feature checks if a trade partner on Steam is an official DMarket bot to confirm authenticity.'
+                )
+              }}
+            </div>
+          </div>
+          <mat-slide-toggle
+            [hideIcon]="true"
+            [ngModel]="options.tradeBotsVerification"
+            (ngModelChange)="updateOptions($event, 'tradeBotsVerification')"
+          >
+          </mat-slide-toggle>
+        </div>
+        <hr class="my-4 border-zinc-900" />
+      }
+      <dm-ext-button
+        [isMaxWidth]="true"
+        iconPos="left"
+        class="mt-6"
+        [routerLink]="'/settings/contact-support' | dmExtLinkLocalize"
+      >
+        <ng-template #iconTemplate>
+          <mat-icon [svgIcon]="svgIcons.IconQuestionBubble"></mat-icon>
+        </ng-template>
+        <ng-template #labelTemplate>
+          {{ t('Contact support') }}
+        </ng-template>
+      </dm-ext-button>
+    </section>
+  </main>
+</ng-container>

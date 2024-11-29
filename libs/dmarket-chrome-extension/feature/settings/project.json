@@ -1,0 +1,10 @@
+{
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "// targets": "to see all targets run: nx show project dm-ext-feature-settings --web",
+  "name": "dm-ext-feature-settings",
+  "prefix": "dm-ext",
+  "projectType": "library",
+  "sourceRoot": "libs/dmarket-chrome-extension/feature/settings/src",
+  "tags": ["scope:dmarket-chrome-extension", "type:feature"],
+  "targets": {}
+}

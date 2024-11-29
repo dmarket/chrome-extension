@@ -1,0 +1,7 @@
+{
+  "name": "shared-css-framework-tailwind",
+  "projectType": "library",
+  "sourceRoot": "libs/shared/tailwind",
+  "tags": ["scope:shared", "type:css-framework"],
+  "targets": {}
+}

@@ -1,0 +1,34 @@
+<div class="mt-2 flex flex-col items-center justify-start">
+  @if (submitError()) {
+    <mat-icon
+      [svgIcon]="svgIcons.IconWarning"
+      class="mb-8 !size-12 text-red-500"
+    ></mat-icon>
+    @if (errorTitleTemplate) {
+      <h2 class="mb-4 text-center text-lg font-bold leading-8 text-white">
+        <ng-container *ngTemplateOutlet="errorTitleTemplate"></ng-container>
+      </h2>
+    }
+    <p class="mb-6 text-center text-stone-300">{{ submitError() | capitalize }}</p>
+    @if (errorTextTemplate) {
+      <p class="mb-6 text-center text-stone-300">
+        <ng-container *ngTemplateOutlet="errorTextTemplate"></ng-container>
+      </p>
+    }
+  } @else {
+    <mat-icon
+      [svgIcon]="svgIcons.IconCircleCheckmark"
+      class="mb-8 !size-12 text-green-400"
+    ></mat-icon>
+    @if (successTitleTemplate) {
+      <h2 class="mb-4 text-center text-lg font-bold leading-8 text-white">
+        <ng-container *ngTemplateOutlet="successTitleTemplate"></ng-container>
+      </h2>
+    }
+    @if (successTextTemplate) {
+      <p class="mb-6 text-center text-stone-300">
+        <ng-container *ngTemplateOutlet="successTitleTemplate"></ng-container>
+      </p>
+    }
+  }
+</div>

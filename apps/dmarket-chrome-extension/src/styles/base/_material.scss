@@ -1,0 +1,57 @@
+/* stylelint-disable */
+@use '@angular/material' as mat;
+@include mat.core;
+
+$dm-ext-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: dark,
+      primary: mat.$green-palette,
+    ),
+    typography: (
+      plain-family: 'Monserrat, Arial, sans-serif',
+      brand-family: 'Monserrat, Arial, sans-serif',
+    ),
+  )
+);
+
+// Material styles override
+html {
+  @include mat.core-theme($dm-ext-theme);
+  @include mat.slide-toggle-theme($dm-ext-theme);
+  @include mat.form-field-theme($dm-ext-theme);
+  @include mat.input-theme($dm-ext-theme);
+  @include mat.select-theme($dm-ext-theme);
+  @include mat.tooltip-theme($dm-ext-theme);
+  @include mat.dialog-theme($dm-ext-theme);
+
+  /** Tooltip **/
+  --mdc-plain-tooltip-container-color: rgb(0 0 0 / 80%);
+  --mdc-plain-tooltip-supporting-text-color: white;
+  /** Progress **/
+  --mdc-circular-progress-active-indicator-color: #fff;
+  /** Switch toggle **/
+  --mdc-switch-selected-handle-color: rgb(255 255 255 / 100%);
+  --mdc-switch-selected-hover-handle-color: rgb(255 255 255 / 100%);
+  --mdc-switch-selected-focus-handle-color: rgb(255 255 255 / 100%);
+  --mdc-switch-selected-focus-track-color: #49bc74;
+  --mdc-switch-selected-hover-track-color: #49bc74;
+  --mdc-switch-selected-pressed-track-color: #49bc74;
+  --mdc-switch-selected-track-color: #49bc74;
+  --mat-switch-selected-handle-size: 28px;
+  --mat-switch-unselected-handle-size: 28px;
+  --mat-switch-unselected-handle-horizontal-margin: 0;
+  --mat-switch-track-outline-color: #403f42;
+  /** Form field */
+  --mdc-outlined-text-field-caret-color: #49bc74;
+  --mdc-outlined-text-field-focus-outline-color: #49bc74;
+  --mdc-outlined-text-field-focus-label-text-color: #49bc74;
+  --mdc-outlined-text-field-container-shape: 8px;
+}
+
+/** Form field */
+.mat-mdc-form-field {
+  .mdc-notched-outline__notch {
+    border-right: none;
+  }
+}

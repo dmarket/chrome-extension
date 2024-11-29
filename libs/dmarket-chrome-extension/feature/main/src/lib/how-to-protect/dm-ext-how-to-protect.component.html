@@ -1,0 +1,80 @@
+<ng-container *transloco="let t">
+  <main class="flex flex-col px-4 pb-4 pt-6">
+    <section class="flex flex-col justify-center text-sm font-semibold">
+      <div class="flex w-full flex-col">
+        <header class="flex items-start gap-2 self-start leading-5 text-white">
+          <mat-icon
+            [svgIcon]="svgIcons.IconWarning"
+            class="min-w-6 text-red-500"
+          ></mat-icon>
+          <h2>
+            {{
+              t(
+                'If you believe that your Steam account has been compromised, take the following steps immediately'
+              )
+            }}
+          </h2>
+        </header>
+        <main class="my-4 w-full text-xs leading-6 text-stone-300">
+          <ul class="list-inside list-disc pl-2">
+            <li>
+              <span>{{
+                t('Scan your computer for viruses, keyloggers, spyware, and other malicious code.')
+              }}</span>
+            </li>
+            <li>
+              <span>{{
+                t('If you can log in, reset your Steam password in the Steam client settings.')
+              }}</span>
+            </li>
+            <li>
+              <span>{{
+                t('Reset the password for your email account associated with Steam.')
+              }}</span>
+            </li>
+            <li>
+              <span>{{ t('Revoke your Steam Web API key at') }}</span
+              >&nbsp;<a
+                href="https://steamcommunity.com/dev/apikey"
+                class="text-white underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                https://steamcommunity.com/dev/apikey </a
+              >.
+            </li>
+            <li>
+              <span>{{
+                t(
+                  'De-authorize all other devices in Steam Guard: go to your Steam Account Details > Manage Steam Guard > De-authorize all other devices.'
+                )
+              }}</span>
+            </li>
+            <li>
+              <span>{{ t('Reset your Steam Trade URL at') }}</span
+              >&nbsp;<a
+                href="https://steamcommunity.com/my/tradeoffers/privacy"
+                class="text-white underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                https://steamcommunity.com/my/tradeoffers/privacy </a
+              >&nbsp;<span>{{
+                t('and click "Create New URL" in the Third-Party Sites section.')
+              }}</span>
+            </li>
+          </ul>
+        </main>
+        <dm-ext-button
+          [isMaxWidth]="true"
+          iconPos="right"
+          (clickEvent)="goHome()"
+        >
+          <ng-template #labelTemplate>
+            {{ t('Close') }}
+          </ng-template>
+        </dm-ext-button>
+      </div>
+    </section>
+  </main>
+</ng-container>

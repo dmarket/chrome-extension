@@ -1,0 +1,38 @@
+@use './mixins' as *;
+
+html {
+  text-size-adjust: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+html,
+body {
+  overscroll-behavior: none;
+}
+
+body {
+  -ms-overflow-style: none;
+}
+
+app-dm-ext[aria-hidden='true'] {
+  visibility: hidden;
+}
+
+@include custom-scrollbar;
+
+// Hide number arrow
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  appearance: textfield;
+}
+
+input:-webkit-autofill {
+  background-clip: text;
+  -webkit-text-fill-color: white;
+}

@@ -1,0 +1,9 @@
+{
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "name": "dm-ext-ui-base",
+  "prefix": "dm-ext",
+  "projectType": "library",
+  "sourceRoot": "libs/dmarket-chrome-extension/ui/base/src",
+  "tags": ["scope:dmarket-chrome-extension", "type:ui-base"],
+  "targets": {}
+}

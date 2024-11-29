@@ -1,0 +1,217 @@
+<ng-content />
+@if (type === 'link') {
+  @if (href) {
+    <a
+      [ngClass]="{
+        'h-7': size === 'sm',
+        'h-10': size === 'md',
+        'h-12': size === 'lg',
+        'pointer-events-none opacity-60': disabled,
+        block: this.isMaxWidth,
+        flex: !this.isMaxWidth,
+      }"
+      class="group/button z-2 relative cursor-pointer overflow-hidden rounded-lg text-center"
+      [href]="href"
+      [target]="targetAttribute"
+      [attr.aria-label]="ariaLabel"
+      (click)="!disabled && buttonClick($event)"
+    >
+      <ng-container *ngTemplateOutlet="linkTemplate"></ng-container>
+    </a>
+  } @else {
+    <a
+      [attr.aria-label]="ariaLabel"
+      [ngClass]="{
+        'h-7': size === 'sm',
+        'h-10': size === 'md',
+        'h-12': size === 'lg',
+        'pointer-events-none opacity-60': disabled,
+        block: this.isMaxWidth,
+        flex: !this.isMaxWidth,
+      }"
+      class="group/button z-2 relative cursor-pointer overflow-hidden rounded-lg text-center"
+      [routerLink]="routerLink"
+      [fragment]="fragment"
+      (click)="!disabled && buttonClick($event)"
+    >
+      <ng-container *ngTemplateOutlet="linkTemplate"></ng-container>
+    </a>
+  }
+} @else if (type === 'iconButton') {
+  @if (href) {
+    <a
+      mat-ripple
+      [target]="targetAttribute"
+      [href]="href"
+      [attr.aria-label]="ariaLabel"
+      [matRippleCentered]="true"
+      [matRippleColor]="rippleColor"
+      [matRippleRadius]="size === 'lg' ? 30 : 20"
+      [ngClass]="{
+        'pointer-events-none opacity-60': disabled,
+        'size-7': size === 'sm',
+        'size-10': size === 'md',
+        'size-12': size === 'lg',
+        'w-full': isMaxWidth,
+      }"
+      class="group/button relative flex flex-col items-center justify-center overflow-hidden rounded-lg"
+      (click)="!disabled && buttonClick($event)"
+    >
+      <ng-container *ngTemplateOutlet="iconHolderTemplate"></ng-container>
+    </a>
+  } @else {
+    <button
+      mat-ripple
+      [routerLink]="routerLink"
+      [fragment]="fragment"
+      [attr.aria-label]="ariaLabel"
+      [matRippleCentered]="true"
+      [matRippleColor]="rippleColor"
+      [matRippleRadius]="size === 'lg' ? 30 : 20"
+      [ngClass]="{
+        'size-7': size === 'sm',
+        'size-10': size === 'md',
+        'size-12': size === 'lg',
+        'pointer-events-none opacity-60': disabled,
+        'w-full': isMaxWidth,
+        'bg-neutral-700': colorScheme === 'primary',
+      }"
+      class="group/button relative flex flex-col items-center justify-center overflow-hidden rounded-lg border-0"
+      (click)="!disabled && buttonClick($event)"
+    >
+      <ng-container *ngTemplateOutlet="iconHolderTemplate"></ng-container>
+    </button>
+  }
+} @else {
+  @if (href) {
+    <a
+      matRipple
+      [href]="href"
+      [target]="targetAttribute"
+      [matRippleColor]="rippleColor"
+      [matRippleRadius]="colorScheme === 'primary' ? 0 : 100"
+      [ngClass]="{
+        'px-3': size === 'sm',
+        'px-5': size === 'md',
+        'px-8': size === 'lg',
+        'pointer-events-none opacity-60': disabled,
+        'w-full': isMaxWidth,
+        'bg-neutral-700': colorScheme === 'primary',
+      }"
+      class="group/button relative flex flex-col justify-center overflow-hidden rounded-lg border-0"
+      (click)="!disabled && buttonClick($event)"
+    >
+      <div class="flex justify-center gap-2 self-center">
+        @if (iconTemplate && iconPos === 'left') {
+          <ng-container *ngTemplateOutlet="iconHolderTemplate"></ng-container>
+        }
+        <div
+          [ngClass]="{
+            'h-7': size === 'sm',
+            'h-10': size === 'md',
+            'h-12': size === 'lg',
+            'px-0': !iconTemplate,
+            'items-center': !iconTemplate && labelTemplate,
+            'items-start': iconTemplate && labelTemplate,
+          }"
+          class="flex grow flex-col justify-center"
+        >
+          <ng-container *ngTemplateOutlet="labelHolderTemplate"></ng-container>
+        </div>
+        @if (iconTemplate && iconPos === 'right') {
+          <ng-container *ngTemplateOutlet="iconHolderTemplate"></ng-container>
+        }
+      </div>
+    </a>
+  } @else {
+    <button
+      matRipple
+      [routerLink]="routerLink"
+      [fragment]="fragment"
+      [matRippleColor]="rippleColor"
+      [matRippleRadius]="colorScheme === 'primary' ? 0 : 100"
+      [ngClass]="{
+        'px-3': size === 'sm',
+        'px-5': size === 'md',
+        'px-8': size === 'lg',
+        'pointer-events-none opacity-60': disabled,
+        'w-full': isMaxWidth,
+        'bg-neutral-700': colorScheme === 'primary',
+      }"
+      class="group/button relative flex flex-col justify-center overflow-hidden rounded-lg border-0"
+      (click)="!disabled && buttonClick($event)"
+    >
+      <div class="flex justify-center gap-2 self-center">
+        @if (iconTemplate && iconPos === 'left') {
+          <ng-container *ngTemplateOutlet="iconHolderTemplate"></ng-container>
+        }
+        <div
+          [ngClass]="{
+            'h-7': size === 'sm',
+            'h-10': size === 'md',
+            'h-12': size === 'lg',
+            'px-0': !iconTemplate,
+            'items-center': !iconTemplate && labelTemplate,
+            'items-start': iconTemplate && labelTemplate,
+          }"
+          class="flex grow flex-col justify-center text-center font-bold"
+        >
+          <ng-container *ngTemplateOutlet="labelHolderTemplate"></ng-container>
+        </div>
+        @if (iconTemplate && iconPos === 'right') {
+          <ng-container *ngTemplateOutlet="iconHolderTemplate"></ng-container>
+        }
+      </div>
+    </button>
+  }
+}
+
+<ng-template #linkTemplate>
+  <div class="flex justify-center gap-2 self-center">
+    <ng-container *ngTemplateOutlet="labelHolderTemplate"></ng-container>
+    @if (iconTemplate && iconPos === 'right') {
+      <ng-container *ngTemplateOutlet="iconHolderTemplate"></ng-container>
+    }
+  </div>
+</ng-template>
+
+<ng-template #labelHolderTemplate>
+  @if (labelTemplate) {
+    <div
+      [ngClass]="{
+        'h-7': size === 'sm',
+        'h-10': size === 'md',
+        'h-12': size === 'lg',
+      }"
+      class="z-2 relative flex flex-col flex-nowrap justify-center text-center text-sm"
+    >
+      <div
+        [ngClass]="{
+          'group-hover/button:': colorScheme === 'primary' && type !== 'link' && !disabled,
+        }"
+        class="whitespace-nowrap font-semibold text-white transition duration-150 ease-in"
+      >
+        <ng-container *ngTemplateOutlet="labelTemplate"></ng-container>
+      </div>
+    </div>
+  }
+</ng-template>
+
+<ng-template #iconHolderTemplate>
+  <div class="flex shrink-0 flex-row flex-nowrap items-center justify-center">
+    <ng-container *ngTemplateOutlet="iconInnerTemplate"></ng-container>
+  </div>
+</ng-template>
+
+<ng-template #iconInnerTemplate>
+  <div class="z-2 static flex shrink-0 items-center justify-center">
+    <span
+      [ngClass]="{
+        'group-hover/button:': !disabled,
+      }"
+      class="flex size-full items-center justify-center text-white transition duration-150 ease-in"
+    >
+      <ng-container *ngTemplateOutlet="iconTemplate"></ng-container>
+    </span>
+  </div>
+</ng-template>

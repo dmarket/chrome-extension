@@ -1,0 +1,10 @@
+{
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "// targets": "to see all targets run: nx show project dm-ext-data-access-messaging --web",
+  "name": "dm-ext-data-access-messaging",
+  "prefix": "dm-ext",
+  "projectType": "library",
+  "sourceRoot": "libs/dmarket-chrome-extension/data-access/messaging/src",
+  "tags": ["scope:dmarket-chrome-extension", "type:data-access"],
+  "targets": {}
+}

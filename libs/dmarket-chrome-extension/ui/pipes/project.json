@@ -1,0 +1,10 @@
+{
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "// targets": "to see all targets run: nx show project dm-ext-ui-pipes --web",
+  "name": "dm-ext-ui-pipes",
+  "prefix": "ext",
+  "projectType": "library",
+  "sourceRoot": "libs/dmarket-chrome-extension/ui/pipes/src",
+  "tags": ["scope:dmarket-chrome-extension", "type:ui-pipes"],
+  "targets": {}
+}

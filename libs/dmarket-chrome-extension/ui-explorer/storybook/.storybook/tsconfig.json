@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "emitDecoratorMetadata": true
+  },
+  "exclude": ["../**/*.spec.ts"],
+  "extends": "../tsconfig.json",
+  "include": [
+    "../../../../dmarket-chrome-extension/ui/base/**/src/lib/**/*.stories.ts",
+    "../../../../dmarket-chrome-extension/ui/domains/**/src/lib/**/*.stories.ts",
+    "*.ts"
+  ]
+}

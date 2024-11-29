@@ -1,0 +1,27 @@
+@if (config(); as config) {
+  <div
+    [ngClass]="config.classes"
+    class="-z-1 absolute left-1/2 top-1/2 h-[310px] w-[310px] translate-x-[-50%] translate-y-[-50%] rounded-full bg-emerald-400 opacity-50 mix-blend-hard-light blur-[111px]"
+  ></div>
+  <dm-ext-shared-image
+    width="88"
+    height="88"
+    type="internal"
+    [src]="config.imageUrl"
+    [priority]="true"
+    alt="status icon"
+    class="z-2 relative block min-h-[88px] min-w-[88px]"
+  />
+  @if (status() === statuses.Processing || loading()) {
+    <div
+      id="status-icon-spinner"
+      class="z-3 absolute left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%]"
+    >
+      <mat-spinner
+        color="primary"
+        [diameter]="40"
+        [strokeWidth]="2"
+      ></mat-spinner>
+    </div>
+  }
+}

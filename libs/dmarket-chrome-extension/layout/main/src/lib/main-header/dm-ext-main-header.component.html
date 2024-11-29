@@ -1,0 +1,17 @@
+<header
+  class="flex h-[56px] w-full flex-row flex-nowrap items-center justify-between border-b border-neutral-800 px-4 shadow-[0_2px_4px_0_rgba(0,0,0,0.15)]"
+>
+  <a [routerLink]="isOptionsPage() ? undefined : ('/' | dmExtLinkLocalize)">
+    <dm-ext-shared-image
+      src="logo.svg"
+      type="internal"
+      alt="Logo"
+      height="28"
+      width="103"
+      [priority]="true"
+    ></dm-ext-shared-image>
+  </a>
+  @if (!isOptionsPage()) {
+    <dm-ext-main-menu />
+  }
+</header>

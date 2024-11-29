@@ -1,0 +1,36 @@
+<ng-container *transloco="let t">
+  <main class="flex flex-col px-4 pb-4 pt-6">
+    <header>
+      <h2 class="text-center text-lg font-bold leading-8">
+        {{ t('Welcome to Trust Shield for DMarket') }}
+      </h2>
+    </header>
+    <section class="mt-12 flex w-full flex-col items-center max-md:mt-10 max-md:max-w-full">
+      <div class="flex items-center gap-10">
+        <dm-ext-status-icon [status]="status"></dm-ext-status-icon>
+      </div>
+      <p
+        class="mt-12 w-full gap-2.5 text-center text-sm font-medium leading-6 text-stone-300 max-md:mt-10"
+      >
+        {{
+          t(
+            'Trust Shield is a Chrome extension designed to help prevent scams on Diamarket clones and beyond. It provides users with advanced security features to identify and avoid fraudulent activities'
+          )
+        }}
+      </p>
+    </section>
+    <dm-ext-button
+      class="mt-12"
+      [isMaxWidth]="true"
+      iconPos="right"
+      [routerLink]="'/home/about' | dmExtLinkLocalize"
+    >
+      <ng-template #iconTemplate>
+        <mat-icon [svgIcon]="svgIcons.IconArrowForward"></mat-icon>
+      </ng-template>
+      <ng-template #labelTemplate>
+        {{ t('Learn more about protection') }}
+      </ng-template>
+    </dm-ext-button>
+  </main>
+</ng-container>

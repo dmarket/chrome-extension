@@ -6,21 +6,6 @@ module.exports = {
   variables: false,
   safelist: {
     deep: [/--purge-ignore$/],
-    standard: [
-      /\!|\[|%|:|\.|\//,
-      'bg-gradient-to-t',
-      'bg-gradient-to-b',
-      'bg-gradient-to-br',
-      'from-blue-200',
-      'to-blue-300',
-      'from-green-300',
-      'to-cyan-300',
-      'from-orange-200',
-      'to-orange-300',
-      'from-fuchsia-200',
-      'to-fuchsia-300',
-      'bg-zinc-800',
-      'bg-dm-zinc-800',
-    ],
+    standard: [/\!|\[|%|:|\.|\//],
   },
 };

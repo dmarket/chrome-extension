@@ -1,0 +1,112 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "importHelpers": true,
+    "isolatedModules": true,
+    "useDefineForClassFields": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2022", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@myth/dm-ext-data-access-messaging": [
+        "libs/dmarket-chrome-extension/data-access/messaging/src/index.ts"
+      ],
+      "@myth/dm-ext-explorer-storybook": [
+        "libs/dmarket-chrome-extension/ui-explorer/storybook/src/index.ts"
+      ],
+      "@myth/dm-ext-feature-error": ["libs/dmarket-chrome-extension/feature/error/src/index.ts"],
+      "@myth/dm-ext-feature-main": ["libs/dmarket-chrome-extension/feature/main/src/index.ts"],
+      "@myth/dm-ext-feature-report": ["libs/dmarket-chrome-extension/feature/report/src/index.ts"],
+      "@myth/dm-ext-feature-settings": [
+        "libs/dmarket-chrome-extension/feature/settings/src/index.ts"
+      ],
+      "@myth/dm-ext-layout-main": ["libs/dmarket-chrome-extension/layout/main/src/index.ts"],
+      "@myth/dm-ext-shared-constants": [
+        "libs/dmarket-chrome-extension/shared/constants/src/index.ts"
+      ],
+      "@myth/dm-ext-shared-extension-utils": [
+        "libs/dmarket-chrome-extension/shared/extension-utils/src/index.ts"
+      ],
+      "@myth/dm-ext-shared-utils": ["libs/dmarket-chrome-extension/shared/utils/src/index.ts"],
+      "@myth/dm-ext-ui-base": ["libs/dmarket-chrome-extension/ui/base/src/index.ts"],
+      "@myth/dm-ext-ui-domains": ["libs/dmarket-chrome-extension/ui/domains/src/index.ts"],
+      "@myth/dm-ext-ui-pipes": ["libs/dmarket-chrome-extension/ui/pipes/src/index.ts"],
+      "@myth/mf-data-access-analytics": [
+        "libs/mythos-foundation/data-access/analytics/src/index.ts"
+      ],
+      "@myth/mf-data-access-prices": ["libs/mythos-foundation/data-access/prices/src/index.ts"],
+      "@myth/mf-feature-analytics": ["libs/mythos-foundation/feature/analytics/src/index.ts"],
+      "@myth/mf-feature-cookie-consent": [
+        "libs/mythos-foundation/feature/cookies-consent/src/index.ts"
+      ],
+      "@myth/mf-feature-cookie-policy": [
+        "libs/mythos-foundation/feature/cookie-policy/src/index.ts"
+      ],
+      "@myth/mf-feature-error": ["libs/mythos-foundation/feature/error/src/index.ts"],
+      "@myth/mf-feature-governance-page": [
+        "libs/mythos-foundation/feature/governance-page/src/index.ts"
+      ],
+      "@myth/mf-feature-main": ["libs/mythos-foundation/feature/main/src/index.ts"],
+      "@myth/mf-feature-privacy-policy": [
+        "libs/mythos-foundation/feature/privacy-policy/src/index.ts"
+      ],
+      "@myth/mf-layout-main": ["libs/mythos-foundation/layout/main/src/index.ts"],
+      "@myth/mf-ui-base": ["libs/mythos-foundation/ui/base/src/index.ts"],
+      "@myth/mf-ui-directives": ["libs/mythos-foundation/ui/directives/src/index.ts"],
+      "@myth/mf-ui-domains": ["libs/mythos-foundation/ui/domains/src/index.ts"],
+      "@myth/mf-ui-explorer-storybook": [
+        "libs/mythos-foundation/ui-explorer/storybook/src/index.ts"
+      ],
+      "@myth/mf-ui-pipes": ["libs/mythos-foundation/ui/pipes/src/index.ts"],
+      "@myth/mg-data-access-careers": ["libs/mythical-games/data-access/careers/src/index.ts"],
+      "@myth/mg-data-access-contacts": ["libs/mythical-games/data-access/contacts/src/index.ts"],
+      "@myth/mg-data-access-games": ["libs/mythical-games/data-access/games/src/index.ts"],
+      "@myth/mg-data-access-news": ["libs/mythical-games/data-access/news/src/index.ts"],
+      "@myth/mg-data-access-posts": ["libs/mythical-games/data-access/posts/src/index.ts"],
+      "@myth/mg-feature-careers": ["libs/mythical-games/feature/careers/src/index.ts"],
+      "@myth/mg-feature-checkout-terms": [
+        "libs/mythical-games/feature/checkout-terms/src/index.ts"
+      ],
+      "@myth/mg-feature-cookie-consent": [
+        "libs/mythical-games/feature/cookies-consent/src/index.ts"
+      ],
+      "@myth/mg-feature-cookie-policy": ["libs/mythical-games/feature/cookie-policy/src/index.ts"],
+      "@myth/mg-feature-error": ["libs/mythical-games/feature/error/src/index.ts"],
+      "@myth/mg-feature-main": ["libs/mythical-games/feature/main/src/index.ts"],
+      "@myth/mg-feature-people": ["libs/mythical-games/feature/people/src/index.ts"],
+      "@myth/mg-feature-privacy-policy": [
+        "libs/mythical-games/feature/privacy-policy/src/index.ts"
+      ],
+      "@myth/mg-feature-terms-of-service": [
+        "libs/mythical-games/feature/terms-of-service/src/index.ts"
+      ],
+      "@myth/mg-layout-main": ["libs/mythical-games/layout/main/src/index.ts"],
+      "@myth/mg-ui-base": ["libs/mythical-games/ui/base/src/index.ts"],
+      "@myth/mg-ui-directives": ["libs/mythical-games/ui/directives/src/index.ts"],
+      "@myth/mg-ui-domains": ["libs/mythical-games/ui/domains/src/index.ts"],
+      "@myth/mg-ui-explorer-storybook": ["libs/mythical-games/ui-explorer/storybook/src/index.ts"],
+      "@myth/mg-ui-pipes": ["libs/mythical-games/ui/pipes/src/index.ts"],
+      "@myth/shared-todo-constants": ["libs/shared/todo/constants/src/index.ts"],
+      "@myth/shared-todo-i18n": ["libs/shared/todo/i18n/src/index.ts"],
+      "@myth/shared-todo-utils": ["libs/shared/todo/utils/src/index.ts"],
+      "@myth/shared-ui-base": ["libs/shared/ui/base/src/index.ts"],
+      "@myth/shared-ui-pipes": ["libs/shared/ui/pipes/src/index.ts"],
+      "@myth/shared/types": ["libs/shared/types/src/index.ts"],
+      "@myth/todo-core-util-api": ["libs/todo/core/util-api/src/index.ts"],
+      "@myth/todo-core-util-envs": ["libs/todo/core/util-envs/src/index.ts"],
+      "@myth/todo-core-util-providers": ["libs/todo/core/util-providers/src/index.ts"],
+      "@myth/todo-feature-flags": ["libs/todo/feature-flags/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

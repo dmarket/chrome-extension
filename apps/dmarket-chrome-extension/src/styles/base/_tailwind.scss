@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  :root {
+    --shared-skeleton-bg: #0e1018;
+    --shared-skeleton-gradient: linear-gradient(
+      90deg,
+      rgb(255 6 60 / 0%),
+      rgb(255 6 60 / 10%),
+      rgb(255 6 60 / 0%)
+    );
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "ext-css-framework-tailwind",
+  "projectType": "library",
+  "sourceRoot": "libs/dmarket-chrome-extension/css-framework/tailwind",
+  "tags": ["scope:chrome-extension", "type:css-framework"],
+  "targets": {}
+}

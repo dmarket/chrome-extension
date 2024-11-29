@@ -1,0 +1,10 @@
+{
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "// targets": "to see all targets run: nx show project dm-ext-layout-main --web",
+  "name": "dm-ext-layout-main",
+  "prefix": "dm-ext",
+  "projectType": "library",
+  "sourceRoot": "libs/dmarket-chrome-extension/layout/main/src",
+  "tags": ["scope:dmarket-chrome-extension", "type:layout"],
+  "targets": {}
+}

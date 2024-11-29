@@ -1,0 +1,145 @@
+<ng-container *transloco="let t">
+  <main class="flex flex-col px-4 pb-4 pt-6">
+    <section class="flex w-full flex-row items-start gap-6">
+      @if (status(); as status) {
+        <dm-ext-status-icon
+          [status]="status"
+          [loading]="
+            status === statuses.Processing
+              ? true
+              : status !== statuses.Disabled
+                ? !lastValidatedDomain()
+                : false
+          "
+        ></dm-ext-status-icon>
+      }
+      <div class="h-full min-h-[88px] w-px bg-zinc-900"></div>
+      <div class="flex grow flex-col items-start justify-start">
+        @if (status(); as status) {
+          <div
+            [ngClass]="status === statuses.Disabled ? 'justify-center' : 'justify-between'"
+            class="flex min-h-[88px] flex-col"
+          >
+            @if (status === statuses.Disabled) {
+              <p class="text-left text-sm font-medium leading-6 text-stone-300 max-md:mt-10">
+                {{ t('Oh my goodness') }}
+              </p>
+              <h2 class="text-left text-2xl font-bold uppercase text-stone-300">
+                {{ t('Protection disabled') }}
+              </h2>
+            } @else if (status === statuses.Processing) {
+              <p class="text-left text-sm font-medium leading-6 text-stone-300 max-md:mt-10">
+                {{ t('Checking Website Legitimacy...') }}
+              </p>
+              <h2 class="mb-4 line-clamp-1 break-all text-2xl font-bold uppercase text-stone-300">
+                {{ lastValidatedDomain() }}
+              </h2>
+            } @else if (status) {
+              <p
+                [ngClass]="{
+                  'text-green-400': status === statuses.Safe,
+                  'text-red-500': status === statuses.Alert,
+                  'text-amber-300': status === statuses.Unknown,
+                }"
+                class="text-left text-sm font-medium leading-6 max-md:mt-10"
+              >
+                @switch (status) {
+                  @case (statuses.Safe) {
+                    {{ t('All Safe, It’s DMarket') }}
+                  }
+                  @case (statuses.Alert) {
+                    {{ t('Attention, Scam Found!') }}
+                  }
+                  @case (statuses.Error) {
+                    {{ t('Something went wrong...') }}
+                  }
+                  @default {
+                    {{ t('The site is not an official DMarket domain') }}
+                  }
+                }
+              </p>
+              <h2
+                [matTooltip]="lastValidatedDomain() | uppercase"
+                [matTooltipPosition]="'below'"
+                [ngClass]="{
+                  'text-stone-300': status === statuses.Error || status === statuses.Unknown,
+                }"
+                class="mb-4 line-clamp-1 break-all text-2xl font-bold uppercase"
+              >
+                {{ lastValidatedDomain() ?? 'Unknown' }}
+              </h2>
+            }
+          </div>
+          @if (status === statuses.Unknown) {
+            <dm-ext-button
+              class="mt-8"
+              iconPos="left"
+              [routerLink]="'/report' | dmExtLinkLocalize"
+            >
+              <ng-template #iconTemplate>
+                <mat-icon [svgIcon]="svgIcons.IconFlag"></mat-icon>
+              </ng-template>
+              <ng-template #labelTemplate>
+                {{ t('Continue to report') }}
+              </ng-template>
+            </dm-ext-button>
+          }
+          @if (status === statuses.Error) {
+            <dm-ext-button
+              class="mt-8"
+              iconPos="left"
+              (clickEvent)="checkTabDomain()"
+            >
+              <ng-template #iconTemplate>
+                <mat-icon [svgIcon]="svgIcons.IconReload"></mat-icon>
+              </ng-template>
+              <ng-template #labelTemplate>
+                {{ t('Try again') }}
+              </ng-template>
+            </dm-ext-button>
+          }
+          @if (status === statuses.Disabled) {
+            <dm-ext-button
+              class="mt-8"
+              iconPos="left"
+              (clickEvent)="enableScamDetection()"
+            >
+              <ng-template #labelTemplate>
+                {{ t('Detect scam sites') }}
+              </ng-template>
+            </dm-ext-button>
+          }
+        }
+      </div>
+    </section>
+
+    @if (status() === statuses.Alert) {
+      <div class="w-fulls mt-4 grid grid-cols-2 gap-3">
+        <dm-ext-button
+          [isMaxWidth]="true"
+          iconPos="left"
+          (clickEvent)="redirectToDmarket()"
+        >
+          <ng-template #iconTemplate>
+            <mat-icon [svgIcon]="svgIcons.IconShield"></mat-icon>
+          </ng-template>
+          <ng-template #labelTemplate>
+            {{ t('Go to Dmarket') }}
+          </ng-template>
+        </dm-ext-button>
+        <dm-ext-button
+          [isMaxWidth]="true"
+          iconPos="left"
+          [routerLink]="'/home/how-to-protect' | dmExtLinkLocalize"
+        >
+          <ng-template #iconTemplate>
+            <mat-icon [svgIcon]="svgIcons.IconInfo"></mat-icon>
+          </ng-template>
+          <ng-template #labelTemplate>
+            {{ t('How to protect?') }}
+          </ng-template>
+        </dm-ext-button>
+      </div>
+    }
+  </main>
+</ng-container>

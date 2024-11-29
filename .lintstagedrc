@@ -1,5 +1,5 @@
 {
-  "**/*.{ts,js}": ["eslint"],
-  "**/*": ["npm run format --"],
-  "**/*.{scss,css}": ["npm run lint:styles --"]
+  "*.ts": ["nx affected:lint --files"],
+  "*": ["nx format:write --files"],
+  "*.scss": ["npx stylelint --fix"]
 }

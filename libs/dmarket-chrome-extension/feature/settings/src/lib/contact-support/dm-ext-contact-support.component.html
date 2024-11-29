@@ -1,0 +1,205 @@
+<ng-container *transloco="let t">
+  <main class="flex flex-col px-4 pb-4 pt-6">
+    @if (step() !== Steps.Step2) {
+      <header class="flex flex-row flex-nowrap items-center justify-start gap-2">
+        <dm-ext-button
+          size="sm"
+          type="iconButton"
+          colorScheme="transparent"
+          [routerLink]="'/settings' | dmExtLinkLocalize"
+        >
+          <ng-template #iconTemplate>
+            <mat-icon
+              class="rotate-180"
+              [svgIcon]="svgIcons.IconArrowForward"
+            ></mat-icon>
+          </ng-template>
+        </dm-ext-button>
+        <h2 class="text-left text-lg font-bold leading-8">
+          {{ t('Contact support') }}
+        </h2>
+      </header>
+    }
+    <section
+      [ngClass]="{ 'mt-6': step() !== Steps.Step2 }"
+      [formGroup]="contactForm"
+      class="flex w-full flex-col items-stretch gap-6"
+    >
+      @if (step() === Steps.Step2) {
+        <dm-ext-result-screen [submitError]="submitError()">
+          <ng-template #errorTitleTemplate>{{ t('Something went wrong...') }}</ng-template>
+          <ng-template #errorTextTemplate>{{ t('Please try again later') }}</ng-template>
+          <ng-template #successTitleTemplate>{{
+            t('Thanks, your report has been accepted')
+          }}</ng-template>
+          <ng-template #successTextTemplate>
+            {{ t('Together, we are creating a safe environment') }}</ng-template
+          >
+        </dm-ext-result-screen>
+      } @else {
+        @if (topicControl) {
+          <mat-form-field
+            appearance="outline"
+            class="w-full"
+          >
+            <mat-label>{{ t('Choose topic') }}</mat-label>
+            <mat-select
+              [formControlName]="FormFields.Topic"
+              required
+              panelClass="h-[136px]"
+            >
+              @for (option of topics; track option) {
+                <mat-option [value]="option">
+                  {{ t(option) }}
+                </mat-option>
+              }
+            </mat-select>
+            @if (topicControl.invalid && topicControl.dirty) {
+              <mat-error>
+                @if (topicControl.hasError('required')) {
+                  {{ t('This field is required') }}
+                } @else if (messageControl.hasError('minlength')) {
+                  {{
+                    t('Minimum required length is {requiredLength}', {
+                      requiredLength: constraints.messageMinLength,
+                    })
+                  }}
+                } @else if (messageControl.hasError('maxlength')) {
+                  {{
+                    t('Maximum length is length is {requiredLength}', {
+                      requiredLength: constraints.topicMaxLength,
+                    })
+                  }}
+                }
+              </mat-error>
+            }
+          </mat-form-field>
+        }
+        @if (emailControl) {
+          <mat-form-field
+            appearance="outline"
+            class="w-full"
+          >
+            <mat-label>{{ t('Email address') }}</mat-label>
+            <input
+              required
+              matInput
+              [formControlName]="FormFields.Email"
+              [name]="FormFields.Email"
+            />
+
+            @if (emailControl.invalid && emailControl.dirty) {
+              <mat-error>
+                @if (emailControl.hasError('required')) {
+                  {{ t('This field is required') }}
+                } @else if (emailControl.hasError('email')) {
+                  {{ t('Please enter valid email address') }}
+                } @else if (messageControl.hasError('minlength')) {
+                  {{
+                    t('Minimum required length is {requiredLength}', {
+                      requiredLength: constraints.messageMinLength,
+                    })
+                  }}
+                }
+              </mat-error>
+            }
+          </mat-form-field>
+        }
+
+        @if (messageControl) {
+          <mat-form-field
+            appearance="outline"
+            class="w-full"
+          >
+            <mat-label>{{ t('Your message') }}</mat-label>
+            <input
+              required
+              matInput
+              [formControlName]="FormFields.Message"
+              [name]="FormFields.Message"
+            />
+
+            @if (messageControl.invalid) {
+              <mat-error>
+                @if (messageControl.hasError('required')) {
+                  {{ t('This field is required') }}
+                } @else if (messageControl.hasError('minlength')) {
+                  {{
+                    t('Minimum required length is {requiredLength}', {
+                      requiredLength: constraints.messageMinLength,
+                    })
+                  }}
+                } @else if (messageControl.hasError('maxlength')) {
+                  {{
+                    t('Maximum required length is {requiredLength}', {
+                      requiredLength: constraints.messageMaxLength,
+                    })
+                  }}
+                }
+              </mat-error>
+            }
+          </mat-form-field>
+        }
+      }
+    </section>
+
+    <div class="mt-4 grid w-full grid-cols-1 gap-3">
+      @if (step() === Steps.Step2) {
+        <ng-container
+          *ngTemplateOutlet="
+            actionBtn;
+            context: {
+              disabled: false,
+              action: closeReport.bind(this),
+              label: t('Close'),
+              iconPos: 'left',
+            }
+          "
+        ></ng-container>
+      } @else {
+        <ng-container
+          *ngTemplateOutlet="
+            actionBtn;
+            context: {
+              disabled: !contactForm.valid,
+              action: sendRequest.bind(this),
+              icon: svgIcons.IconArrowForward,
+              label: t('Send request'),
+              processing: processing(),
+              iconPos: 'right',
+            }
+          "
+        ></ng-container>
+      }
+      <ng-template
+        #actionBtn
+        let-disabled="disabled"
+        let-action="action"
+        let-icon="icon"
+        let-label="label"
+        let-processing="processing"
+        let-iconPos="iconPos"
+      >
+        <dm-ext-button
+          [disabled]="disabled"
+          [isMaxWidth]="true"
+          (clickEvent)="action()"
+          [iconPos]="iconPos"
+        >
+          <ng-template #iconTemplate>
+            @if (processing) {
+              <mat-spinner diameter="24"></mat-spinner>
+            } @else if (icon) {
+              <mat-icon [svgIcon]="icon"></mat-icon>
+            }
+          </ng-template>
+          @if (label) {
+            <ng-template #labelTemplate>
+              {{ label }}
+            </ng-template>
+          }
+        </dm-ext-button>
+      </ng-template>
+    </div>
+  </main>
+</ng-container>

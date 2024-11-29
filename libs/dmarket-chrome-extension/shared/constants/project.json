@@ -1,0 +1,10 @@
+{
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "// targets": "to see all targets run: nx show project dm-ext-shared-constants --web",
+  "name": "dm-ext-shared-constants",
+  "prefix": "dm-ext",
+  "projectType": "library",
+  "sourceRoot": "libs/dmarket-chrome-extension/shared/constants/src",
+  "tags": ["scope:dmarket-chrome-extension", "type:utils"],
+  "targets": {}
+}

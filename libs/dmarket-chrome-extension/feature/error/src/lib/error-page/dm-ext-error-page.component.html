@@ -1,0 +1,21 @@
+<ng-container *transloco="let t">
+  <div class="flex h-screen w-full flex-col items-center justify-center">
+    <div class="flex w-full flex-col items-center justify-center">
+      <h1 class="text-9xl">404</h1>
+      <p class="mb-10 text-3xl">{{ t('Looks like you got lost…') }}</p>
+      <dm-ext-button
+        class="mt-12"
+        [isMaxWidth]="true"
+        iconPos="right"
+        [routerLink]="'/' | dmExtLinkLocalize"
+      >
+        <ng-template #iconTemplate>
+          <mat-icon [svgIcon]="svgIcons.IconArrowForward"></mat-icon>
+        </ng-template>
+        <ng-template #labelTemplate>
+          {{ t('Back to Homepage') }}
+        </ng-template>
+      </dm-ext-button>
+    </div>
+  </div>
+</ng-container>
