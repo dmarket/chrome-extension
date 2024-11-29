@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { importProvidersFrom, NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { customMatIconsLoaderProviders } from '@myth/dm-ext-ui-base';
 import {
   applicationConfig,
@@ -33,7 +32,7 @@ const meta: Meta<DmExtResultScreenComponent> = {
       providers: [
         ...customMatIconsLoaderProviders,
         provideHttpClient(withFetch(), withInterceptors([])),
-        importProvidersFrom(BrowserAnimationsModule, MatIconModule),
+        importProvidersFrom(MatIconModule),
       ],
     }),
   ],
