@@ -16,7 +16,7 @@
 
 #### Setup Home Path
 
-> pn setup
+> pnpm setup
 
 Restart terminal
 
@@ -39,4 +39,4 @@ Install Nx Console IDE extension
 
 ### Build extension
 
->  nx run dmarket-chrome-extension:build:production
+> nx run dmarket-chrome-extension:build:production
