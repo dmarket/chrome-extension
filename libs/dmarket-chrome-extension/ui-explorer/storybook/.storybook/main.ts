@@ -20,7 +20,6 @@ const config: StorybookConfig = {
   staticDirs: [
     { from: '../../../../../apps/dmarket-chrome-extension/src/assets', to: '/assets' },
     { from: '../../../../../.storybook/assets', to: '/' },
-    // { from: '../../../../../.storybook/assets/favicon.svg', to: '.' },
   ],
 };
 
