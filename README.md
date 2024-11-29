@@ -40,3 +40,7 @@ Install Nx Console IDE extension
 ### Build extension
 
 > nx run dmarket-chrome-extension:build:production
+
+### Upgrade Storybook
+
+> npx storybook@latest upgrade --config-dir libs/dmarket-chrome-extension/ui-explorer/storybook/.storybook
