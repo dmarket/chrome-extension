@@ -78,6 +78,7 @@ class BackgroundService {
 
   async handleInstall(): Promise<void> {
     await browser.runtime.openOptionsPage();
+    await browser.action.openPopup();
     await this.analyticsService.fireEvent(GaEventNames.ExtensionInstalled);
   }
 
