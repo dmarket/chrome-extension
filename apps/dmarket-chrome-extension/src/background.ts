@@ -334,10 +334,12 @@ browser.runtime.onInstalled.addListener(async ({ reason }) => {
   }
 });
 
-browser.windows.onFocusChanged.addListener(async () => {
-  backgroundService?.messagingService?.postActionMessage({
-    action: MessageActionNames.ClosePopup,
-  });
+browser.windows.onFocusChanged.addListener(async (windowId) => {
+  if (windowId >= 0) {
+    backgroundService?.messagingService?.postActionMessage({
+      action: MessageActionNames.ClosePopup,
+    });
+  }
   await backgroundService.updateTabStatus();
 });
 
