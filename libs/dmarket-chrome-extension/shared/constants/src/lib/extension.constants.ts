@@ -1,6 +1,7 @@
 export const dmExtId = 'oamkfipicfhlhahhjhkhbfmimhjaddhg';
 export const dmExtDefaultTitle = 'DMarket Trust Shield';
 export const dmExtDmarketOfficialUrl = 'https://dmarket.com';
+export const dmExtUninstallUrl = dmExtDmarketOfficialUrl;
 
 export enum DmExtTabStatus {
   Processing = 'processing',
