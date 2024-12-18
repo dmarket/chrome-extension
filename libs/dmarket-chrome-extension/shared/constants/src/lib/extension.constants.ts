@@ -72,6 +72,7 @@ export const dmExtMessagingChannel = 'dm-ext-messaging';
 export const allUrlsMatchPattern = '*://*/*';
 export const maxValidationCacheSize = 200;
 export const dmExtChromeServiceUrls = [
+  dmExtId,
   'localhost',
   'extensions',
   'newtab',

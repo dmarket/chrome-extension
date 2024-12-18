@@ -34,7 +34,13 @@ function isLinkMainElement(targetElement: HTMLElement): boolean {
     for (const index of dmLinkElements.keys()) {
       const dmLinkElement = dmLinkElements[index];
       const linkImages = dmLinkElement.querySelectorAll('img');
-      if (linkImages.length > 1) return;
+      if (linkImages.length > 1) {
+        return;
+      } else {
+        const imgParents = Array.from(linkImages).map((img) => img.parentElement);
+        const isAdImage = imgParents.some((parent) => parent?.classList?.contains('ez24Df'));
+        if (isAdImage) return;
+      }
       const dmResultElement = getResultRootElement(dmLinkElement);
       if (dmResultElement) {
         const googleResultsElement = dmResultElement.parentElement;
