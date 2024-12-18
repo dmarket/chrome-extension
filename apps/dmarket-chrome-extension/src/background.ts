@@ -10,10 +10,11 @@ import {
   dmExtDmarketOfficialUrl,
   dmExtEventToStatusMap,
   DmExtTabStatus,
+  dmExtUninstallUrl,
   GaEventNames,
   maxValidationCacheSize,
   MessageActionNames,
-  timeConstants,
+  timeConstants
 } from '@myth/dm-ext-shared-constants';
 import {
   GaAnalytics,
@@ -325,6 +326,7 @@ addEventListener('unhandledrejection', async (event) => {
 });
 
 browser.runtime.onInstalled.addListener(async ({ reason }) => {
+  await browser.runtime.setUninstallURL(dmExtUninstallUrl);
   setInterval(() => backgroundService.getDomainMap(), backgroundService.cachingInterval);
   if (reason === 'install') {
     return await backgroundService.handleInstall();
