@@ -1,12 +1,12 @@
 {
   "dm_ext_description": {
-    "message": "DMarket Trust Shield Chrome Extension"
+    "message": "DMarket Trust Shield Chrome Extension THIS EXTENSION IS FOR BETA TESTING"
   },
   "dm_ext_icon_disabled": {
     "message": "Disabled"
   },
   "dm_ext_name": {
-    "message": "DMarket Trust Shield"
+    "message": "DMarket Trust Shield BETA"
   },
   "dm_ext_unknown_error": {
     "message": "Unknown error"
