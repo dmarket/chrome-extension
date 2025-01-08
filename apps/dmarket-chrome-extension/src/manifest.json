@@ -38,7 +38,7 @@
     "open_in_tab": true
   },
   "permissions": ["storage", "scripting", "activeTab"],
-  "version": "1.0.4",
+  "version": "1.0.5",
   "web_accessible_resources": [
     {
       "resources": ["*.svg", "*.woff2", "styles.css"],
