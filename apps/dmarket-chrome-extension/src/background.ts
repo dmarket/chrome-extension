@@ -14,7 +14,7 @@ import {
   GaEventNames,
   maxValidationCacheSize,
   MessageActionNames,
-  timeConstants
+  timeConstants,
 } from '@myth/dm-ext-shared-constants';
 import {
   GaAnalytics,
@@ -111,7 +111,7 @@ class BackgroundService {
   async updateTabStatus(tabId?: number): Promise<void> {
     const tab = tabId ? await browser.tabs.get(tabId) : await this.getTab();
     if (this.tabIdDetectionPending === tabId) return;
-    const { domainAuthenticityVerification } = await optionsStorage.getAll();
+    const { domainAuthenticityVerification, userDomainsWhiteList } = await optionsStorage.getAll();
     if (tabId) {
       this.tabIdDetectionPending = tabId;
     }
@@ -121,7 +121,7 @@ class BackgroundService {
       currentTabStatus: DmExtTabStatus.Processing,
       domain: parsedUrlHost,
     });
-    const cachedValue = this.getCachedValue(parsedUrlHost);
+    const cachedValue = this.getCachedValue(parsedUrlHost, userDomainsWhiteList);
     const result =
       domainAuthenticityVerification && cachedValue
         ? cachedValue
@@ -142,6 +142,12 @@ class BackgroundService {
       currentTabStatus: result.currentTabStatus,
       domain: result.host,
     });
+    if (result.currentTabStatus === DmExtTabStatus.Alert && tabId && tab?.url) {
+      await browser.tabs.update(tabId, {
+        url: browser.runtime.getURL(`/phishing-blocker.html?blockedUrl=${tab?.url}`),
+        active: true,
+      });
+    }
   }
 
   async getDomainMap(): Promise<Set<string>> {
@@ -201,8 +207,12 @@ class BackgroundService {
     }
   }
 
-  private getCachedValue(host?: string): ValidationResult | undefined {
+  private getCachedValue(host?: string, userWhiteList  = ''): ValidationResult | undefined {
     if (!host) return undefined;
+    const whiteList = userWhiteList.split(',').filter(Boolean);
+    if (whiteList.includes(host)) {
+      return { currentTabStatus: DmExtTabStatus.Unknown, host };
+    }
     const result = this.validationCache.get(host);
     return result?.timestamp && Date.now() - result.timestamp < this.cachingInterval
       ? result.value

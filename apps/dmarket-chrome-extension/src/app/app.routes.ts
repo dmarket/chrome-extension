@@ -15,6 +15,12 @@ export const appRoutes = (): Route[] => {
         import('@myth/dm-ext-feature-settings').then((m) => m.dmExtSettingsPageRoutes),
     },
     {
+      path: 'phishing-blocker.html',
+      pathMatch: 'full',
+      loadChildren: () =>
+        import('@myth/dm-ext-feature-phishing-blocker').then((m) => m.dmExtPhishingBlockerPageRoutes),
+    },
+    {
       path: 'report',
       loadChildren: () =>
         import('@myth/dm-ext-feature-report').then((m) => m.dmExtReportPageRoutes),

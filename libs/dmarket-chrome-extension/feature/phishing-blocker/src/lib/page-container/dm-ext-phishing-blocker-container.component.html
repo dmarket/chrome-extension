@@ -1,0 +1,77 @@
+<ng-container *transloco="let t">
+  <main class="mx-auto flex flex-col px-4 pb-4 pt-6">
+    <section class="mt-6 flex w-full max-w-[800px] flex-col items-stretch">
+      <div
+        class="flex flex-col"
+        role="main"
+      >
+        <dm-ext-shared-image
+          type="internal"
+          width="99"
+          height="86"
+          src="icon-error.svg"
+          alt="Error Icon"
+        />
+
+        <h1
+          class="mt-10 w-full flex-1 shrink gap-2.5 self-stretch pt-6 text-4xl font-bold leading-relaxed text-white max-md:max-w-full"
+        >
+          {{ t('This website may be unsafe') }}
+        </h1>
+        <p
+          class="mt-10 w-full flex-1 shrink gap-2.5 self-stretch text-lg font-medium leading-8 text-stone-300 max-md:max-w-full"
+        >
+          {{
+            t(
+              'DMarket has flagged this site as potentially deceptive. Attackers may attempt to steal your Steam credentials or exploit other vulnerabilities.'
+            )
+          }}
+        </p>
+        <div
+          class="mt-6 flex flex-wrap items-start gap-6 self-start pt-4 text-lg font-bold leading-8 max-md:max-w-full"
+        >
+          <dm-ext-button
+            iconPos="left"
+            target="_self"
+            href="https://dmarket.com"
+          >
+            <ng-template #labelTemplate>
+              {{ t('Go to official DMarket.com') }}
+            </ng-template>
+          </dm-ext-button>
+
+          <dm-ext-button
+            iconPos="left"
+            colorScheme="plain"
+            (clickEvent)="proceed()"
+          >
+            <ng-template #labelTemplate>
+             <span class="text-red-500">{{ t('Proceed anyway') }}</span>
+            </ng-template>
+          </dm-ext-button>
+        </div>
+        <p
+          class="mt-10 w-full flex-1 shrink gap-2.5 self-stretch text-lg font-medium leading-8 text-white max-md:max-w-full"
+        >
+          <span class="text-stone-300">{{
+            t('If this flagging is for a legitimate website, please')
+          }}&nbsp;</span>
+          <a
+            [href]="reportLink"
+            class="text-green-300 underline"
+            >{{ t('report a detection issue') }}</a
+          >
+        </p>
+        <div class="mt-10 flex w-[239px] max-w-full flex-1 flex-col">
+          <dm-ext-shared-image
+            type="internal"
+            width="239"
+            height="79"
+            src="logo-plain.svg"
+            alt="Logo Icon"
+          />
+        </div>
+      </div>
+    </section>
+  </main>
+</ng-container>

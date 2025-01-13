@@ -11,6 +11,7 @@ export const optionsStorageDefaults = {
   lastValidatedDomain: '',
   tutorialShowed: false,
   domainMapUpdatedAt: 0,
+  userDomainsWhiteList: '',
 };
 
 export const optionsStorage = new OptionsSync({

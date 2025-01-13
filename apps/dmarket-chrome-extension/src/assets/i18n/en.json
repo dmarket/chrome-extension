@@ -77,5 +77,11 @@
   "chrome browser": "chrome browser",
   "find and click": "find and click",
   "icon in the toolbar": "icon in the toolbar",
-  "to pin extension on your toolbar.": "to pin extension on your toolbar."
+  "to pin extension on your toolbar.": "to pin extension on your toolbar.",
+  "This website may be unsafe": "This website may be unsafe",
+  "DMarket has flagged this site as potentially deceptive. Attackers may attempt to steal your Steam credentials or exploit other vulnerabilities.": "DMarket has flagged this site as potentially deceptive. Attackers may attempt to steal your Steam credentials or exploit other vulnerabilities.",
+  "Go to official DMarket.com": "Go to official DMarket.com",
+  "Proceed anyway": "Proceed anyway",
+  "If this flagging is for a legitimate website, please": "If this flagging is for a legitimate website, please",
+  "report a detection issue": "report a detection issue"
 }
