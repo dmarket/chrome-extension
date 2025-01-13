@@ -129,6 +129,11 @@ class BackgroundService {
     if (!cachedValue && parsedUrlHost && domainAuthenticityVerification) {
       this.setCachedValue(parsedUrlHost, result);
     }
+    if (result.currentTabStatus === DmExtTabStatus.Alert && tabId && tab?.url) {
+      await browser.tabs.update(tabId, {
+        url: browser.runtime.getURL(`/phishing-blocker.html?blockedUrl=${tab?.url}`)
+      });
+    }
     await optionsStorage.set({
       currentTabStatus: result.currentTabStatus,
       lastValidatedDomain: result.host,
@@ -142,12 +147,6 @@ class BackgroundService {
       currentTabStatus: result.currentTabStatus,
       domain: result.host,
     });
-    if (result.currentTabStatus === DmExtTabStatus.Alert && tabId && tab?.url) {
-      await browser.tabs.update(tabId, {
-        url: browser.runtime.getURL(`/phishing-blocker.html?blockedUrl=${tab?.url}`),
-        active: true,
-      });
-    }
   }
 
   async getDomainMap(): Promise<Set<string>> {
