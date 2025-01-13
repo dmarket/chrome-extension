@@ -31,7 +31,6 @@
           class="mt-6 flex flex-wrap items-start gap-6 self-start pt-4 text-lg font-bold leading-8 max-md:max-w-full"
         >
           <dm-ext-button
-            iconPos="left"
             target="_self"
             href="https://dmarket.com"
           >
@@ -41,21 +40,20 @@
           </dm-ext-button>
 
           <dm-ext-button
-            iconPos="left"
             colorScheme="plain"
             (clickEvent)="proceed()"
           >
             <ng-template #labelTemplate>
-             <span class="text-red-500">{{ t('Proceed anyway') }}</span>
+              <span class="text-red-500">{{ t('Proceed anyway') }}</span>
             </ng-template>
           </dm-ext-button>
         </div>
         <p
           class="mt-10 w-full flex-1 shrink gap-2.5 self-stretch text-lg font-medium leading-8 text-white max-md:max-w-full"
         >
-          <span class="text-stone-300">{{
-            t('If this flagging is for a legitimate website, please')
-          }}&nbsp;</span>
+          <span class="text-stone-300"
+            >{{ t('If this flagging is for a legitimate website, please') }}&nbsp;</span
+          >
           <a
             [href]="reportLink"
             class="text-green-300 underline"
