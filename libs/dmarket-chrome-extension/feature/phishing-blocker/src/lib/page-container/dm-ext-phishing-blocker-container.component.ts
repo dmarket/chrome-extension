@@ -11,6 +11,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { DmExtMessagingFacadeService } from '@myth/dm-ext-data-access-messaging';
 import { getHostName } from '@myth/dm-ext-shared-utils';
 import { DmExtButtonComponent, DmExtIconsEnum, ImageComponent } from '@myth/dm-ext-ui-base';
+import { dmExtDomainReportForm } from '@myth/dm-ext-shared-constants';
 
 const redirectTimeout = 300;
 @Component({
@@ -28,8 +29,7 @@ export class DmExtPhishingBlockerContainerComponent implements OnInit {
   options = this.messagingFacadeService.options;
   blockedUrl: WritableSignal<string | null> = signal(null);
   readonly svgIcons = DmExtIconsEnum;
-  // TODO replace with report form
-  readonly reportLink = '#report';
+  readonly reportLink = dmExtDomainReportForm;
 
   async ngOnInit() {
     await this.messagingFacadeService.getOptions();
