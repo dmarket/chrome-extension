@@ -14,7 +14,7 @@ import { RouterLink } from '@angular/router';
 import { hostAttr, isExternalUrl } from '@myth/dm-ext-shared-utils';
 
 export type ButtonSizes = 'sm' | 'md' | 'lg';
-export type ButtonColorSchemes = 'primary' | 'transparent';
+export type ButtonColorSchemes = 'primary' | 'transparent' | 'plain';
 export type ButtonPositions = 'right' | 'left';
 export type ButtonTypes = 'default' | 'link' | 'iconButton';
 
