@@ -65,9 +65,9 @@ const buildBanner = (tradeVerified: boolean): HTMLDivElement => {
 function verifyTradeOffer(messagingService: ExtensionMessagingService) {
   const url = window?.location.href;
   if (url) {
-    const splitUrl = url.split('/');
+    const splitUrl = url.split('/').filter(Boolean);
     const tradeOfferId = splitUrl[splitUrl.length - 1];
-    if (tradeOfferId) {
+    if (tradeOfferId && Number.isInteger(+tradeOfferId)) {
       messagingService.postApiMessage({
         dmExtApi: `${offerIdApi}/${tradeOfferId}`,
       });
