@@ -59,10 +59,15 @@ function isLinkMainElement(targetElement: HTMLElement): boolean {
       const dmLinkInfoElement = $('div', dmLinkElement);
       if (dmLinkInfoElement) {
         if (dmLinkInfoElement?.parentElement) {
-          dmLinkInfoElement.parentElement.style.backgroundColor = 'transparent';
-          dmLinkInfoElement.parentElement.style.top = '0.25em';
-          dmLinkInfoElement.parentElement.style.width = '23px';
-          dmLinkInfoElement.parentElement.style.height = '25px';
+          if (isTitleLink) {
+            widget.style.maxWidth = 'calc(100% - 20px)';
+            widget.style.position = 'relative';
+          } else {
+            dmLinkInfoElement.parentElement.style.backgroundColor = 'transparent';
+            dmLinkInfoElement.parentElement.style.top = '0.25em';
+            dmLinkInfoElement.parentElement.style.width = '23px';
+            dmLinkInfoElement.parentElement.style.height = '25px';
+          }
         }
         dmLinkInfoElement.replaceWith(widget);
         const dmLinkMoreOptionsElement = dmLinkElement.parentElement?.nextElementSibling;
