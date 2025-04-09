@@ -32,7 +32,7 @@ function isLinkMainElement(targetElement: HTMLElement): boolean {
       window.getComputedStyle(document.body).getPropertyValue('background-color') !==
       'rgb(255, 255, 255)';
     const isImageSearchPageSelected = !!document.querySelector('#search div[data-id="mosaic"]');
-    for (const index of dmLinkElements.keys()) {
+    for (const index of [...dmLinkElements.keys()].reverse()) {
       const dmLinkElement = dmLinkElements[index];
       const linkImages = dmLinkElement.querySelectorAll('img');
       if (linkImages.length > 1) {
@@ -48,7 +48,7 @@ function isLinkMainElement(targetElement: HTMLElement): boolean {
       if (dmResultElement) {
         const googleResultsElement = dmResultElement.parentElement;
         if (googleResultsElement) {
-          googleResultsElement.append(dmResultElement);
+          googleResultsElement.prepend(dmResultElement);
         }
       }
       const widget = document.createElement('div');
