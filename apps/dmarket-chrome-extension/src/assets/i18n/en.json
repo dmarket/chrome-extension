@@ -65,7 +65,7 @@
   "This feature protects against phishing sites that mimic the DMarket domain by verifying the authenticity of the website.": "This feature protects against phishing sites that mimic the DMarket domain by verifying the authenticity of the website.",
   "This field is required": "This field is required",
   "Together, we are creating a safe environment": "Together, we are creating a safe environment",
-  "Trust Shield is a Chrome extension designed to help prevent scams on Diamarket clones and beyond. It provides users with advanced security features to identify and avoid fraudulent activities": "Trust Shield is a Chrome extension designed to help prevent scams on Diamarket clones and beyond. It provides users with advanced security features to identify and avoid fraudulent activities",
+  "Trust Shield is a Chrome extension designed to protect users from scams on fake DMarket sites and beyond. It offers advanced security features to help identify and avoid fraudulent activities.": "Trust Shield is a Chrome extension designed to protect users from scams on fake DMarket sites and beyond. It offers advanced security features to help identify and avoid fraudulent activities.",
   "Try again": "Try again",
   "Typed the URL directly": "Typed the URL directly",
   "Unknown": "Unknown",
@@ -77,5 +77,11 @@
   "chrome browser": "chrome browser",
   "find and click": "find and click",
   "icon in the toolbar": "icon in the toolbar",
-  "to pin extension on your toolbar.": "to pin extension on your toolbar."
+  "to pin extension on your toolbar.": "to pin extension on your toolbar.",
+  "This website may be unsafe": "This website may be unsafe",
+  "DMarket has flagged this site as potentially deceptive. Attackers may attempt to steal your Steam credentials or exploit other vulnerabilities.": "DMarket has flagged this site as potentially deceptive. Attackers may attempt to steal your Steam credentials or exploit other vulnerabilities.",
+  "Go to official DMarket.com": "Go to official DMarket.com",
+  "Proceed anyway": "Proceed anyway",
+  "If this flagging is for a legitimate website, please": "If this flagging is for a legitimate website, please",
+  "report a detection issue": "report a detection issue"
 }

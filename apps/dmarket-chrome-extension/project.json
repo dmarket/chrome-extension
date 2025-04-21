@@ -19,6 +19,7 @@
         "assets": [
           "apps/dmarket-chrome-extension/src/assets",
           "apps/dmarket-chrome-extension/src/options.html",
+          "apps/dmarket-chrome-extension/src/phishing-blocker.html",
           "apps/dmarket-chrome-extension/src/manifest.json",
           "apps/dmarket-chrome-extension/src/_locales"
         ],

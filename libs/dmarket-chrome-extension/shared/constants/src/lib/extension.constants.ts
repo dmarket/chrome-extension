@@ -2,6 +2,8 @@ export const dmExtId = 'oamkfipicfhlhahhjhkhbfmimhjaddhg';
 export const dmExtDefaultTitle = 'DMarket Trust Shield';
 export const dmExtDmarketOfficialUrl = 'https://dmarket.com';
 export const dmExtUninstallUrl = 'https://forms.gle/ohGz4sQNdSvXNuyY7';
+// TODO replace with report form
+export const dmExtDomainReportForm = 'https://forms.gle/ohGz4sQNdSvXNuyY7';
 
 export enum DmExtTabStatus {
   Processing = 'processing',

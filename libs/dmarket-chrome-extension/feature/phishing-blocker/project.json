@@ -1,0 +1,10 @@
+{
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "// targets": "to see all targets run: nx show project dm-ext-feature-phishing-blocker --web",
+  "name": "dm-ext-feature-phishing-blocker",
+  "prefix": "dm-ext",
+  "projectType": "library",
+  "sourceRoot": "libs/dmarket-chrome-extension/feature/phishing-blocker/src",
+  "tags": ["scope:dmarket-chrome-extension", "type:feature"],
+  "targets": {}
+}

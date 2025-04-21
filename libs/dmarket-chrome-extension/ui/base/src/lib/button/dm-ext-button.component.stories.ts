@@ -29,7 +29,7 @@ const meta: Meta<DmExtButtonComponent> = {
       control: { type: 'select' },
     },
     colorScheme: {
-      options: ['primary', 'transparent'],
+      options: ['primary', 'transparent', 'plain'],
       control: { type: 'select' },
     },
     type: {
