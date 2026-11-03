@@ -1,0 +1,321 @@
+version: 2.1
+
+# CI/CD for the DMarket Trust Shield Chrome extension (nx + pnpm + Angular, Chrome MV3).
+#
+# WHAT RUNS ON EVERY PUSH
+#   - check       : lint and unit tests of every nx project, plus the tests of scripts/ci.
+#   - build-prod  : production build -> two zips (scripts/ci/package.sh):
+#                     dmarket-trust-shield-<v>-chrome.zip           the Chrome Web Store package, the
+#                                                                   build with the manifest "key" removed
+#                     dmarket-trust-shield-<v>-chrome-unpacked.zip  the build as-is, for Load unpacked
+#                                                                   with the right extension id
+#   - build-debug : development build -> dmarket-trust-shield-<v>-chrome-dev.zip (sourcemaps and a
+#                   reload client that connects to ws://localhost:4201)
+#   `check` gates both builds, so no installable artifact exists on a pipeline whose checks failed.
+#   The zips are in each build job's Artifacts tab.
+#
+# RELEASE MODEL — releases come from a `release/vX.Y.Z` BRANCH, and a human approves them.
+#   The version lives only in apps/dmarket-chrome-extension/src/manifest.json (1-4 numbers). Land the
+#   version bump and the matching `## [x.y.z]` section of CHANGELOG.md on `main` through a pull
+#   request, push `release/v<that version>` from `main`, then approve `hold_release` in CircleCI. The
+#   branch name must equal the manifest version, or `release` fails before tagging anything.
+#
+#   After the approval everything runs unattended:
+#     release  ->  pack_crx  ->  store_preflight  ->  upload_to_store  ->  delete_release_branch
+#   `release` tags v<version> and publishes a GitHub Release with the store zip, the store manifest
+#   and SHA256SUMS. `pack_crx` signs the store zip from THIS pipeline's workspace into a CRX3, after
+#   checking it is byte-identical to the zip on the Release, and attaches the .crx. `store_preflight`
+#   rehearses the upload read-only, `upload_to_store` uploads and submits for review, and
+#   `delete_release_branch` removes the branch (the release stays reachable from its tag).
+#
+#   Three things make a push a non-release: the tag for that version already exists on another commit
+#   (the version was not bumped); the tag is on this commit and its GitHub Release is already complete
+#   (an earlier pipeline released it); or `[skip release]` is in the commit message. `release` writes its
+#   decision to artifacts/release/RELEASE in the workspace, and every later job starts with
+#   `halt_unless_releasing`, so a skip leaves the whole workflow green and a branch whose push
+#   released nothing is kept. The store refuses a version that is not strictly greater than the
+#   published one; `store_preflight` refuses it first, before anything is uploaded.
+#
+#   RETRYING. If the tag is already on THIS commit but its GitHub Release is incomplete (an earlier
+#   `publish` failed), `release` resumes: it does not tag again and uploads only the missing assets,
+#   after checking the ones already attached are byte-identical to this build.
+#   Retry any failure with "Rerun workflow from failed" ON THE WORKFLOW THAT TAGGED the version: only
+#   its build matches the Release. A rerun from start or a new push rebuilds the zip, and both
+#   `release` and `pack_crx` then refuse it.
+#
+# SECRETS AND PROJECT SETTINGS
+#   CRX_SIGNING_KEY_B64 (base64 of the RSA private key PEM registered under Verified CRX Uploads) and
+#   CHROME_SERVICE_ACCOUNT_PRIVATE_KEY (the store service account's key) are CircleCI PROJECT
+#   environment variables. GITHUB_TOKEN comes from the org-wide context `org-global`, listed only on
+#   release, pack_crx and delete_release_branch. The store ids are not secret and sit in the config.
+#
+#   Every job starts with `drop_secrets`, which unsets the keys it has no use for in every later step.
+#   That is a mitigation, NOT a boundary: project environment variables are handed to every job on
+#   every branch and stay in the container's own process environment, so anyone with push access, and
+#   any dependency installed in check or the builds, can read both keys.
+#
+#   Required project settings (Project Settings -> Advanced):
+#     Free and Open Source                                 OFF
+#     Build forked pull requests                           OFF
+#     Pass secrets to builds from forked pull requests     OFF
+#     Enable dynamic config using setup workflows          OFF
+#     Allow triggering pipelines with unversioned config   OFF
+#     Only admins can change settings                      ON
+#     Default branch                                       main
+#
+# WHERE THE SHELL LIVES — scripts/ci/*, not here. CircleCI rejects the whole config when any single
+#   string in it is 2048 characters or longer, so steps stay one-liners.
+
+executors:
+  node:
+    docker:
+      - image: cimg/node:26.12.1
+    resource_class: medium
+    environment:
+      REPO_SLUG: dmarket/chrome-extension
+      HUSKY: '0'
+
+commands:
+  drop_secrets:
+    description: Unset the named variables for every later step of the job. A mitigation only.
+    parameters:
+      names:
+        description: Space-separated variable names.
+        type: string
+    steps:
+      - run:
+          name: Drop secrets this job does not use
+          command: echo "unset << parameters.names >>" >> "$BASH_ENV"
+
+  # The first step after attach_workspace in every job after `release`. A missing or unreadable
+  # decision fails the job rather than halting it: never skip a release silently.
+  halt_unless_releasing:
+    steps:
+      - run:
+          name: Continue only if `release` released this pipeline
+          command: |
+            f=artifacts/release/RELEASE; d="$(cat "$f" 2>/dev/null || true)"
+            case "$d" in
+              true) echo "release=true" ;;
+              false) echo "This pipeline released nothing (see the release job); halting."; circleci-agent step halt ;;
+              *) echo "ERROR: $f is missing or holds '$d', not true or false; the release job's decision did not reach this job." >&2; exit 1 ;;
+            esac
+
+  # No restore_cache/save_cache: a cache saved by any branch could be restored into a release build.
+  install_deps:
+    steps:
+      - run:
+          name: Check the Node version against .nvmrc
+          command: |
+            if [ "$(node -v)" != "v$(cat .nvmrc)" ]; then
+              echo "ERROR: the image runs $(node -v) but .nvmrc says v$(cat .nvmrc)." >&2
+              echo "       Change .nvmrc and the image in .circleci/config.yml together." >&2
+              exit 1
+            fi
+      - run:
+          name: Install pnpm (version from package.json packageManager)
+          command: sudo npm i -g "pnpm@$(node -p "require('./package.json').packageManager.split('@')[1].split('+')[0]")"
+      - run:
+          name: Install dependencies
+          command: pnpm install --frozen-lockfile
+
+jobs:
+  check:
+    executor: node
+    steps:
+      - drop_secrets:
+          names: CRX_SIGNING_KEY_B64 CHROME_SERVICE_ACCOUNT_PRIVATE_KEY
+      - checkout
+      - install_deps
+      # `when: always` on the later steps so one red run reports every failure, not just the first.
+      - run:
+          name: Lint
+          command: pnpm nx run-many -t lint
+      - run:
+          name: Unit tests
+          when: always
+          command: pnpm nx run-many -t test
+      - run:
+          name: CI script tests
+          when: always
+          command: node --test 'scripts/ci/*.test.mjs'
+
+  build:
+    executor: node
+    parameters:
+      mode:
+        type: enum
+        enum: [production, development]
+    steps:
+      - drop_secrets:
+          names: CRX_SIGNING_KEY_B64 CHROME_SERVICE_ACCOUNT_PRIVATE_KEY
+      - checkout
+      - install_deps
+      - run:
+          name: Build (<< parameters.mode >>)
+          command: pnpm nx run dmarket-chrome-extension:build:<< parameters.mode >>
+      - run:
+          name: Verify and zip (<< parameters.mode >>)
+          command: bash scripts/ci/package.sh << parameters.mode >>
+      - store_artifacts:
+          path: artifacts
+      # Only the production zips travel on to the release jobs.
+      - when:
+          condition:
+            equal: [production, << parameters.mode >>]
+          steps:
+            - persist_to_workspace:
+                root: .
+                paths:
+                  - artifacts
+
+  release:
+    executor: node
+    steps:
+      - drop_secrets:
+          names: CRX_SIGNING_KEY_B64 CHROME_SERVICE_ACCOUNT_PRIVATE_KEY
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Resolve the version and decide whether this is a release
+          command: bash scripts/ci/release.sh resolve
+      - run:
+          name: Guard — CHANGELOG section and the store manifest
+          command: bash scripts/ci/release.sh guard
+      - run:
+          name: Tag
+          command: bash scripts/ci/release.sh tag
+      - run:
+          name: GitHub Release + assets
+          command: bash scripts/ci/release.sh publish
+      # The decision `resolve` wrote, for halt_unless_releasing in the later jobs.
+      - persist_to_workspace:
+          root: .
+          paths:
+            - artifacts/release
+
+  # Signs the store zip from the workspace into a CRX3. Node + curl + coreutils only: no dependency
+  # code runs next to the signing key here.
+  pack_crx:
+    executor: node
+    steps:
+      - drop_secrets:
+          names: CHROME_SERVICE_ACCOUNT_PRIVATE_KEY
+      - checkout
+      - attach_workspace:
+          at: .
+      - halt_unless_releasing
+      - run:
+          name: Check the workspace zip against the Release, then verify it
+          command: bash scripts/ci/pack-crx.sh verify
+      - run:
+          name: Sign it into a CRX3
+          command: bash scripts/ci/pack-crx.sh pack
+      - run:
+          name: Attach the .crx to the GitHub Release
+          command: bash scripts/ci/pack-crx.sh attach
+      - store_artifacts:
+          path: artifacts/store
+      - persist_to_workspace:
+          root: .
+          paths:
+            - artifacts/store
+
+  # Rehearses the upload against the live store, read-only, so a wrong id, a missing service account
+  # or a version the store would refuse fails before anything is sent.
+  store_preflight:
+    executor: node
+    environment: &store_ids
+      CHROME_EXTENSION_ID: oamkfipicfhlhahhjhkhbfmimhjaddhg
+      CHROME_PUBLISHER_ID: 096d9f9f-426a-4d3f-80c2-43ad369fb016
+      CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL: p2p-extension-ci@dmarket-bd703.iam.gserviceaccount.com
+    steps:
+      - drop_secrets:
+          names: CRX_SIGNING_KEY_B64
+      - checkout
+      - attach_workspace:
+          at: .
+      - halt_unless_releasing
+      - run:
+          name: Rehearse the upload (read-only — nothing is sent)
+          command: bash scripts/ci/upload-to-store.sh preflight
+
+  upload_to_store:
+    executor: node
+    environment: *store_ids
+    steps:
+      - drop_secrets:
+          names: CRX_SIGNING_KEY_B64
+      - checkout
+      - attach_workspace:
+          at: .
+      - halt_unless_releasing
+      - run:
+          name: Upload and submit for review
+          command: bash scripts/ci/upload-to-store.sh upload
+
+  # Last, because every job above checks the branch out and a failed store step is retried with
+  # "Rerun workflow from failed" on this workflow (see RETRYING in the header).
+  delete_release_branch:
+    executor: node
+    steps:
+      - drop_secrets:
+          names: CRX_SIGNING_KEY_B64 CHROME_SERVICE_ACCOUNT_PRIVATE_KEY
+      - checkout
+      - attach_workspace:
+          at: .
+      - halt_unless_releasing
+      - run:
+          name: Delete the release branch
+          command: bash scripts/ci/delete-release-branch.sh
+
+workflows:
+  ci:
+    jobs:
+      - check
+      - build:
+          name: build-prod
+          mode: production
+          requires:
+            - check
+      - build:
+          name: build-debug
+          mode: development
+          requires:
+            - check
+      # The only approval. Not waiting for build-debug: only the production build is released.
+      - hold_release:
+          type: approval
+          requires:
+            - check
+            - build-prod
+          filters: &release_branches
+            branches:
+              only: /^release\/v(0|[1-9]\d*)(\.(0|[1-9]\d*)){0,3}$/
+      - release:
+          requires:
+            - hold_release
+          context:
+            - org-global
+          filters: *release_branches
+      - pack_crx:
+          requires:
+            - release
+          context:
+            - org-global
+          filters: *release_branches
+      - store_preflight:
+          requires:
+            - pack_crx
+          filters: *release_branches
+      - upload_to_store:
+          requires:
+            - store_preflight
+          filters: *release_branches
+      - delete_release_branch:
+          requires:
+            - upload_to_store
+          context:
+            - org-global
+          filters: *release_branches

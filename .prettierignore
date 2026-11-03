@@ -11,3 +11,7 @@ pnpm-lock.yaml
 
 /.nx/workspace-data
 /helm-charts
+
+# Kept close to the copies in dmarket/p2p-extension.
+/scripts/ci/pack-crx.mjs
+/scripts/ci/cws-upload.mjs
