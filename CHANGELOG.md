@@ -11,3 +11,10 @@ tag a version without one, and the section becomes the GitHub Release notes. See
 README.
 
 ## [Unreleased]
+
+## [1.0.4.6] - 2026-11-03
+
+### Changed
+
+- Built with Node 26.12.1.
+- Built, signed and uploaded to the Chrome Web Store by CI. No change to how the extension works.
