@@ -172,58 +172,71 @@ jobs:
   release:
     executor: node
     steps:
-      - drop_secrets:
-          names: CRX_SIGNING_KEY_B64 CHROME_SERVICE_ACCOUNT_PRIVATE_KEY
-      - checkout
-      - attach_workspace:
-          at: .
-      - run:
-          name: Resolve the version and decide whether this is a release
-          command: bash scripts/ci/release.sh resolve
-      - run:
-          name: Guard — CHANGELOG section and the store manifest
-          command: bash scripts/ci/release.sh guard
-      - run:
-          name: Tag
-          command: bash scripts/ci/release.sh tag
-      - run:
-          name: GitHub Release + assets
-          command: bash scripts/ci/release.sh publish
-      # The decision `resolve` wrote, for halt_unless_releasing in the later jobs.
-      - persist_to_workspace:
-          root: .
-          paths:
-            - artifacts/release
+    - drop_secrets:
+        names: CRX_SIGNING_KEY_B64 CHROME_SERVICE_ACCOUNT_PRIVATE_KEY
+    - checkout
+    - attach_workspace:
+        at: .
+    - run:
+        name: Resolve the version and decide whether this is a release
+        command: |
+          bash .circleci/release-writer.sh -- bash -euo pipefail \<<'NATIVE_RELEASE_COMMAND'
+          bash scripts/ci/release.sh resolve
+          NATIVE_RELEASE_COMMAND
+    - run:
+        name: Guard — CHANGELOG section and the store manifest
+        command: |
+          bash .circleci/release-writer.sh -- bash -euo pipefail \<<'NATIVE_RELEASE_COMMAND'
+          bash scripts/ci/release.sh guard
+          NATIVE_RELEASE_COMMAND
+    - run:
+        name: Tag
+        command: |
+          bash .circleci/release-writer.sh -- bash -euo pipefail \<<'NATIVE_RELEASE_COMMAND'
+          bash scripts/ci/release.sh tag
+          NATIVE_RELEASE_COMMAND
+    - run:
+        name: GitHub Release + assets
+        command: |
+          bash .circleci/release-writer.sh -- bash -euo pipefail \<<'NATIVE_RELEASE_COMMAND'
+          bash scripts/ci/release.sh publish
+          NATIVE_RELEASE_COMMAND
+    - persist_to_workspace:
+        root: .
+        paths:
+        - artifacts/release
 
-  # Signs the store zip from the workspace into a CRX3. Node + curl + coreutils only: no dependency
-  # code runs next to the signing key here.
   pack_crx:
     executor: node
     steps:
-      - drop_secrets:
-          names: CHROME_SERVICE_ACCOUNT_PRIVATE_KEY
-      - checkout
-      - attach_workspace:
-          at: .
-      - halt_unless_releasing
-      - run:
-          name: Check the workspace zip against the Release, then verify it
-          command: bash scripts/ci/pack-crx.sh verify
-      - run:
-          name: Sign it into a CRX3
-          command: bash scripts/ci/pack-crx.sh pack
-      - run:
-          name: Attach the .crx to the GitHub Release
-          command: bash scripts/ci/pack-crx.sh attach
-      - store_artifacts:
-          path: artifacts/store
-      - persist_to_workspace:
-          root: .
-          paths:
-            - artifacts/store
+    - drop_secrets:
+        names: CHROME_SERVICE_ACCOUNT_PRIVATE_KEY
+    - checkout
+    - attach_workspace:
+        at: .
+    - halt_unless_releasing
+    - run:
+        name: Check the workspace zip against the Release, then verify it
+        command: |
+          bash .circleci/release-writer.sh -- bash -euo pipefail \<<'NATIVE_RELEASE_COMMAND'
+          bash scripts/ci/pack-crx.sh verify
+          NATIVE_RELEASE_COMMAND
+    - run:
+        name: Sign it into a CRX3
+        command: bash scripts/ci/pack-crx.sh pack
+    - run:
+        name: Attach the .crx to the GitHub Release
+        command: |
+          bash .circleci/release-writer.sh -- bash -euo pipefail \<<'NATIVE_RELEASE_COMMAND'
+          bash scripts/ci/pack-crx.sh attach
+          NATIVE_RELEASE_COMMAND
+    - store_artifacts:
+        path: artifacts/store
+    - persist_to_workspace:
+        root: .
+        paths:
+        - artifacts/store
 
-  # Rehearses the upload against the live store, read-only, so a wrong id, a missing service account
-  # or a version the store would refuse fails before anything is sent.
   store_preflight:
     executor: node
     environment: &store_ids
@@ -260,15 +273,18 @@ jobs:
   delete_release_branch:
     executor: node
     steps:
-      - drop_secrets:
-          names: CRX_SIGNING_KEY_B64 CHROME_SERVICE_ACCOUNT_PRIVATE_KEY
-      - checkout
-      - attach_workspace:
-          at: .
-      - halt_unless_releasing
-      - run:
-          name: Delete the release branch
-          command: bash scripts/ci/delete-release-branch.sh
+    - drop_secrets:
+        names: CRX_SIGNING_KEY_B64 CHROME_SERVICE_ACCOUNT_PRIVATE_KEY
+    - checkout
+    - attach_workspace:
+        at: .
+    - halt_unless_releasing
+    - run:
+        name: Delete the release branch
+        command: |
+          bash .circleci/release-writer.sh -- bash -euo pipefail \<<'NATIVE_RELEASE_COMMAND'
+          bash scripts/ci/delete-release-branch.sh
+          NATIVE_RELEASE_COMMAND
 
 workflows:
   ci:
@@ -296,14 +312,12 @@ workflows:
       - release:
           requires:
             - hold_release
-          context:
-            - org-global
+          context: ["release-writer", "org-global"]
           filters: *release_branches
       - pack_crx:
           requires:
             - release
-          context:
-            - org-global
+          context: ["release-writer", "org-global"]
           filters: *release_branches
       - store_preflight:
           requires:
@@ -316,6 +330,5 @@ workflows:
       - delete_release_branch:
           requires:
             - upload_to_store
-          context:
-            - org-global
+          context: ["release-writer", "org-global"]
           filters: *release_branches

@@ -18,7 +18,7 @@
 #
 # Environment:
 #   REPO_SLUG            owner/repo (set by the executor in .circleci/config.yml)
-#   GITHUB_TOKEN         contents:write — read the Release, attach the .crx (context org-global)
+#   RELEASE_TOKEN         contents:write — read the Release, attach the .crx (context org-global)
 #   CRX_SIGNING_KEY_B64  base64 of the RSA private key PEM registered under Package -> Verified CRX
 #                        Uploads (a CircleCI project environment variable). Never printed.
 set -euo pipefail
@@ -30,7 +30,7 @@ CMD="${1:-}"
 : "${REPO_SLUG:?REPO_SLUG must be set (the CircleCI executor sets it)}"
 
 API="https://api.github.com/repos/${REPO_SLUG}"
-AUTH="Authorization: Bearer ${GITHUB_TOKEN:-}"
+AUTH="Authorization: Bearer ${RELEASE_TOKEN:-}"
 # Downloads and the unpacked tree; outside the checkout so nothing lands in the repository.
 WORK="${WORK:-/tmp/deploy}"
 # Staged for `store_artifacts` and `persist_to_workspace`; relative, because the workspace root is `.`.
@@ -43,7 +43,7 @@ CRX="$(crx_name "$VERSION")"
 
 # ── verify ────────────────────────────────────────────────────────────────────────────────────────
 verify() {
-  : "${GITHUB_TOKEN:?GITHUB_TOKEN must be set (org-wide context org-global)}"
+  : "${RELEASE_TOKEN:?RELEASE_TOKEN must be set (scoped release-writer context)}"
 
   # Checked by name only; the value is never printed anywhere in this file.
   if [ -z "${CRX_SIGNING_KEY_B64:-}" ]; then
@@ -128,7 +128,7 @@ pack() {
 
 # ── attach ────────────────────────────────────────────────────────────────────────────────────────
 attach() {
-  : "${GITHUB_TOKEN:?GITHUB_TOKEN must be set (org-wide context org-global)}"
+  : "${RELEASE_TOKEN:?RELEASE_TOKEN must be set (scoped release-writer context)}"
 
   # Nothing is attached, and no SHA256SUMS extended, unless `verify` succeeded in this job.
   if [ ! -f "$WORK/SHA256SUMS.checked" ]; then

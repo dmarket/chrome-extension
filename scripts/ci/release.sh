@@ -23,7 +23,7 @@
 #
 # Environment:
 #   REPO_SLUG      owner/repo (set by the executor in .circleci/config.yml)
-#   GITHUB_TOKEN   contents:write — needed by `tag` and `publish` only (context org-global)
+#   RELEASE_TOKEN   contents:write — needed by `tag` and `publish` only (context org-global)
 #   CIRCLE_BRANCH  the release branch; must be exactly release/v<manifest version>
 #   BASH_ENV       CircleCI's per-job env file, sourced before every step
 set -euo pipefail
@@ -150,7 +150,7 @@ $(git log --pretty=%B 'HEAD^1..HEAD^2')"
       echo "Nothing to release: $tag already exists. Bump \"version\" in $SOURCE_MANIFEST to cut a release."
       release=false
     elif [ -n "$tag_commit" ]; then
-      : "${GITHUB_TOKEN:?GITHUB_TOKEN must be set (org-wide context org-global)}"
+      : "${RELEASE_TOKEN:?RELEASE_TOKEN must be set (scoped release-writer context)}"
       state="$(release_state "$tag" "$version")" || return 1
       if [ "$state" = "incomplete" ]; then
         echo "Resuming $tag: the tag is on this commit but its GitHub Release is incomplete."
@@ -230,18 +230,18 @@ diagnose_push_denied() {
 
 tag() {
   releasing || { skip; return 0; }
-  : "${GITHUB_TOKEN:?GITHUB_TOKEN must be set (org-wide context org-global)}"
+  : "${RELEASE_TOKEN:?RELEASE_TOKEN must be set (scoped release-writer context)}"
 
   # A value pasted into a CI form can arrive with a trailing newline, which lands inside the push URL
   # and is rejected as a bad credential — a 403 with no hint. Tokens never contain whitespace, so
   # trimming is safe; it is announced rather than silent so the stored value gets fixed.
   local trimmed
-  trimmed="$(printf '%s' "$GITHUB_TOKEN" | tr -d '[:space:]')"
-  if [ "$trimmed" != "$GITHUB_TOKEN" ]; then
-    echo "WARNING: GITHUB_TOKEN had surrounding whitespace — trimming it for this run, but fix the" >&2
+  trimmed="$(printf '%s' "$RELEASE_TOKEN" | tr -d '[:space:]')"
+  if [ "$trimmed" != "$RELEASE_TOKEN" ]; then
+    echo "WARNING: RELEASE_TOKEN had surrounding whitespace — trimming it for this run, but fix the" >&2
     echo "         value stored in the org-global context." >&2
-    GITHUB_TOKEN="$trimmed"
-    AUTH="Authorization: Bearer ${GITHUB_TOKEN}"
+    RELEASE_TOKEN="$trimmed"
+    AUTH="Authorization: Bearer ${RELEASE_TOKEN}"
   fi
 
   git config user.name "circleci-bot"
@@ -265,7 +265,7 @@ tag() {
   fi
   # Tolerate losing a race to a parallel pipeline of this commit: the tag on this commit is the
   # desired end state. A tag on another commit is not, and publishing on top of it would be wrong.
-  if ! git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO_SLUG}.git" "$TAG"; then
+  if ! git push "https://github.com/${REPO_SLUG}.git" "$TAG"; then
     remote_commit="$(remote_tag_commit "$TAG" || true)"
     if [ "$remote_commit" = "$(git rev-parse HEAD)" ]; then
       echo "$TAG already on the remote at this commit — another pipeline won the race."
@@ -404,7 +404,7 @@ check_attached() {
 
 publish() {
   releasing || { skip; return 0; }
-  : "${GITHUB_TOKEN:?GITHUB_TOKEN must be set (org-wide context org-global)}"
+  : "${RELEASE_TOKEN:?RELEASE_TOKEN must be set (scoped release-writer context)}"
 
   # Named explicitly rather than globbing artifacts/*: the asset set is then the same on every release,
   # and a file that appears in the workspace for any other reason (the -unpacked zip, for one) cannot
@@ -446,7 +446,7 @@ publish() {
   echo "Release $TAG published: https://github.com/${REPO_SLUG}/releases/tag/${TAG}"
 }
 
-AUTH="Authorization: Bearer ${GITHUB_TOKEN:-}"
+AUTH="Authorization: Bearer ${RELEASE_TOKEN:-}"
 
 case "$CMD" in
   resolve) resolve ;;
